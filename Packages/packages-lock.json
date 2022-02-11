@@ -1,5 +1,71 @@
 {
   "dependencies": {
+    "com.microsoft.azure.spatial-anchors-sdk.android": {
+      "version": "file:MixedReality/com.microsoft.azure.spatial-anchors-sdk.android-2.8.1.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.unity.xr.arcore": "3.1.3",
+        "com.microsoft.azure.spatial-anchors-sdk.core": "2.8.1"
+      }
+    },
+    "com.microsoft.azure.spatial-anchors-sdk.core": {
+      "version": "file:MixedReality/com.microsoft.azure.spatial-anchors-sdk.core-2.8.1.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.unity.subsystemregistration": "1.0.6",
+        "com.unity.xr.arsubsystems": "3.1.3",
+        "com.unity.xr.arfoundation": "3.1.3"
+      }
+    },
+    "com.microsoft.azure.spatial-anchors-sdk.windows": {
+      "version": "file:MixedReality/com.microsoft.azure.spatial-anchors-sdk.windows-2.8.1.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.microsoft.azure.spatial-anchors-sdk.core": "2.8.1"
+      }
+    },
+    "com.microsoft.mixedreality.toolkit.examples": {
+      "version": "file:MixedReality/com.microsoft.mixedreality.toolkit.examples-2.7.3.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.microsoft.mixedreality.toolkit.foundation": "2.7.3",
+        "com.microsoft.mixedreality.toolkit.extensions": "2.7.3"
+      }
+    },
+    "com.microsoft.mixedreality.toolkit.extensions": {
+      "version": "file:MixedReality/com.microsoft.mixedreality.toolkit.extensions-2.7.3.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.microsoft.mixedreality.toolkit.foundation": "2.7.3"
+      }
+    },
+    "com.microsoft.mixedreality.toolkit.foundation": {
+      "version": "file:MixedReality/com.microsoft.mixedreality.toolkit.foundation-2.7.3.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.microsoft.mixedreality.toolkit.standardassets": "2.7.3"
+      }
+    },
+    "com.microsoft.mixedreality.toolkit.standardassets": {
+      "version": "file:MixedReality/com.microsoft.mixedreality.toolkit.standardassets-2.7.3.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {
+        "com.unity.textmeshpro": "2.1.4"
+      }
+    },
+    "com.microsoft.mixedreality.worldlockingtools": {
+      "version": "file:MixedReality/com.microsoft.mixedreality.worldlockingtools-1.5.7.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {}
+    },
     "com.unity.collab-proxy": {
       "version": "1.14.4",
       "depth": 0,
@@ -35,6 +101,13 @@
     "com.unity.ide.vscode": {
       "version": "1.2.4",
       "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.subsystemregistration": {
+      "version": "1.0.6",
+      "depth": 1,
       "source": "registry",
       "dependencies": {},
       "url": "https://packages.unity.com"
@@ -79,6 +152,67 @@
         "com.unity.modules.ui": "1.0.0",
         "com.unity.modules.imgui": "1.0.0"
       }
+    },
+    "com.unity.xr.arcore": {
+      "version": "3.1.3",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.xr.arsubsystems": "3.1.3",
+        "com.unity.xr.management": "3.0.6",
+        "com.unity.modules.androidjni": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.arfoundation": {
+      "version": "3.1.3",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.xr.arsubsystems": "3.1.3"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.arsubsystems": {
+      "version": "3.1.3",
+      "depth": 1,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.subsystemregistration": "1.0.6"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.legacyinputhelpers": {
+      "version": "2.1.8",
+      "depth": 3,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.vr": "1.0.0",
+        "com.unity.modules.xr": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.management": {
+      "version": "4.0.1",
+      "depth": 2,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.modules.subsystems": "1.0.0",
+        "com.unity.modules.vr": "1.0.0",
+        "com.unity.modules.xr": "1.0.0",
+        "com.unity.xr.legacyinputhelpers": "2.1.7",
+        "com.unity.subsystemregistration": "1.0.6"
+      },
+      "url": "https://packages.unity.com"
+    },
+    "com.unity.xr.windowsmr.metro": {
+      "version": "4.2.3",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.ugui": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
     },
     "com.unity.modules.ai": {
       "version": "1.0.0",
