@@ -1,0 +1,10 @@
+A Minimum Viable Product has just enough core features to effectively deploy the product, and no more.
+
+More detail here: https://en.wikipedia.org/wiki/Minimum_viable_product
+
+You will find here short scripts, light scenes, mono function demos to help you understanding the core of each Maestro capabilities.
+
+Of course, all these stuffs are only for training! Error are not processed and uses cases are very limited. 
+But I hope that could be a base for your own developments.
+
+For now, it's quite empty, I will add more and more interesting things over time, generally based on our talks :-) It's always very inspiring.
