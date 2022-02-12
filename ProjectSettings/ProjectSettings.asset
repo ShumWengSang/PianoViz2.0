@@ -661,7 +661,7 @@ PlayerSettings:
       Appointments: False
       BackgroundMediaPlayback: False
       BlockedChatMessages: False
-      Bluetooth: False
+      Bluetooth: True
       Chat: False
       CodeGeneration: False
       Contacts: False
