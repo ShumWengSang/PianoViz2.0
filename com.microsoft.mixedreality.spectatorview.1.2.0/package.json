@@ -17,8 +17,8 @@
     "url": "https://www.aka.ms/spectatorview"
   },
   "dependencies": {
-    "com.unity.xr.arcore": "2.2.0-preview.2",
-    "com.unity.xr.arfoundation": "2.1.4",
-    "com.unity.xr.arkit": "2.1.1"
+    "com.unity.xr.arcore": "3.1.3",
+    "com.unity.xr.arfoundation": "3.1.3",
+    "com.unity.xr.arkit": "3.1.3"
   }
 }
