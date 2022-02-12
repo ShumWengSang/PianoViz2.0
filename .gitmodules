@@ -1,0 +1,3 @@
+[submodule "BleWinrtDll"]
+	path = BleWinrtDll
+	url = git@github.com:ShumWengSang/BleWinrtDll.git
