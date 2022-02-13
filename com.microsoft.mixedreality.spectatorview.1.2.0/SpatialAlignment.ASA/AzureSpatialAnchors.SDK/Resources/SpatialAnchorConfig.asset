@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45b0089a7785abf4f908eb77852f8a71, type: 3}
+  m_Script: {fileID: 11500000, guid: cac8611c30d93e445b9a3d4b1ad6ae10, type: 3}
   m_Name: SpatialAnchorConfig
   m_EditorClassIdentifier: 
   authenticationMode: 0
-  spatialAnchorsAccountId: 8a761afe-a3e3-4e91-819c-3f5f31ec0b23
-  spatialAnchorsAccountKey: /QfOYmRPUVQyFExCReztOKjBqJ35GAPVtgGmrJp7zeg=
-  spatialAnchorsAccountDomain: westus2.mixedreality.azure.com
+  spatialAnchorsAccountId: 
+  spatialAnchorsAccountKey: 
   clientId: 
   tenantId: 
