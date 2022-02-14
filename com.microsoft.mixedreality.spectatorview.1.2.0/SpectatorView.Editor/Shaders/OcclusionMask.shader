@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-
+#if defined(SHADER_API_D3D11)
+#pragma target 5.0
 Shader "SV/OcclusionMask"
 {
     Properties
@@ -74,3 +75,4 @@ Shader "SV/OcclusionMask"
         }
     }
 }
+#endif
