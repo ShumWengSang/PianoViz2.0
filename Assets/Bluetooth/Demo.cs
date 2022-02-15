@@ -62,7 +62,6 @@ public class Demo : MonoBehaviour
                         };
                     if (res.nameUpdated)
                         devices[res.id]["name"] = res.name;
-                    Debug.Log("Found bluetooth device: " + res.name);
                     if (res.isConnectableUpdated)
                         devices[res.id]["isConnectable"] = res.isConnectable.ToString();
                     // consider only devices which have a name and which are connectable

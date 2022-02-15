@@ -3,8 +3,7 @@
 
 // NOTE: MRTK Shaders are versioned via the MRTK.Shaders.sentinel file.
 // When making changes to any shader's source file, the value in the sentinel _must_ be incremented.
-#if defined(SHADER_API_D3D11)
-#pragma target 5.0
+
 Shader "Mixed Reality Toolkit/Standard"
 {
     Properties
@@ -1260,4 +1259,3 @@ Shader "Mixed Reality Toolkit/Standard"
     Fallback "Hidden/InternalErrorShader"
     CustomEditor "Microsoft.MixedReality.Toolkit.Editor.MixedRealityStandardShaderGUI"
 }
-#endif

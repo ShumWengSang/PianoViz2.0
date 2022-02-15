@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class BleMIDI
 {
-    static string BleMIDI_Service_ID = "03B80E5A-EDE8-4B33-A751-6CE34EC4C700";
-    static string BleMIDI_Data_Characterisic = "7772E5DB-3868-4112-A1A9-F2669D106BF3";
+    public static string BleMIDI_Service_ID = "03b80e5a-ede8-4b33-a751-6ce34ec4c700";
+    public static string BleMIDI_Data_Characterisic = "7772e5db-3868-4112-a1a9-f2669d106bf3";
 
     // 0 to 127
     public byte note;
