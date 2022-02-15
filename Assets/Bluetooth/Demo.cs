@@ -46,14 +46,14 @@ public class Demo : MonoBehaviour
     void Update()
     {
         
-        BleApi.ScanStatus status;
+        BLE.Impl.ScanStatus status;
         if (isScanningDevices)
         {
-            BleApi.DeviceUpdate res = new BleApi.DeviceUpdate();
+            BLE.Impl.DeviceUpdate res = new BLE.Impl.DeviceUpdate();
             do
             {
-                status = BleApi.PollDevice(ref res, false);
-                if (status == BleApi.ScanStatus.AVAILABLE)
+                status = BLE.Impl.PollDevice(ref res, false);
+                if (status == BLE.Impl.ScanStatus.AVAILABLE)
                 {
                     if (!devices.ContainsKey(res.id))
                         devices[res.id] = new Dictionary<string, string>() {
@@ -76,42 +76,42 @@ public class Demo : MonoBehaviour
                         g.transform.localRotation = Quaternion.identity;
                     }
                 }
-                else if (status == BleApi.ScanStatus.FINISHED)
+                else if (status == BLE.Impl.ScanStatus.FINISHED)
                 {
                     isScanningDevices = false;
                     deviceScanButtonText.text = "Scan devices";
                     deviceScanStatusText.text = "finished";
                 }
-            } while (status == BleApi.ScanStatus.AVAILABLE);
+            } while (status == BLE.Impl.ScanStatus.AVAILABLE);
         }
         if (isScanningServices)
         {
-            BleApi.Service res = new BleApi.Service();
+            BLE.Impl.Service res = new BLE.Impl.Service();
             do
             {
-                status = BleApi.PollService(out res, false);
-                if (status == BleApi.ScanStatus.AVAILABLE)
+                status = BLE.Impl.PollService(out res, false);
+                if (status == BLE.Impl.ScanStatus.AVAILABLE)
                 {
                     serviceDropdown.AddOptions(new List<string> { res.uuid });
                     // first option gets selected
                     if (serviceDropdown.options.Count == 1)
                         SelectService(serviceDropdown.gameObject);
                 }
-                else if (status == BleApi.ScanStatus.FINISHED)
+                else if (status == BLE.Impl.ScanStatus.FINISHED)
                 {
                     isScanningServices = false;
                     serviceScanButton.interactable = true;
                     serviceScanStatusText.text = "finished";
                 }
-            } while (status == BleApi.ScanStatus.AVAILABLE);
+            } while (status == BLE.Impl.ScanStatus.AVAILABLE);
         }
         if (isScanningCharacteristics)
         {
-            BleApi.Characteristic res = new BleApi.Characteristic();
+            BLE.Impl.Characteristic res = new BLE.Impl.Characteristic();
             do
             {
-                status = BleApi.PollCharacteristic(out res, false);
-                if (status == BleApi.ScanStatus.AVAILABLE)
+                status = BLE.Impl.PollCharacteristic(out res, false);
+                if (status == BLE.Impl.ScanStatus.AVAILABLE)
                 {
                     string name = res.userDescription != "no description available" ? res.userDescription : res.uuid;
                     characteristicNames[name] = res.uuid;
@@ -120,18 +120,18 @@ public class Demo : MonoBehaviour
                     if (characteristicDropdown.options.Count == 1)
                         SelectCharacteristic(characteristicDropdown.gameObject);
                 }
-                else if (status == BleApi.ScanStatus.FINISHED)
+                else if (status == BLE.Impl.ScanStatus.FINISHED)
                 {
                     isScanningCharacteristics = false;
                     characteristicScanButton.interactable = true;
                     characteristicScanStatusText.text = "finished";
                 }
-            } while (status == BleApi.ScanStatus.AVAILABLE);
+            } while (status == BLE.Impl.ScanStatus.AVAILABLE);
         }
         if (isSubscribed)
         {
-            BleApi.BLEData res = new BleApi.BLEData();
-            while (BleApi.PollData(out res, false))
+            BLE.Impl.BLEData res = new BLE.Impl.BLEData();
+            while (BLE.Impl.PollData(out res, false))
             {
                 var arrayOfMidies = BleToMidiConverter.Convert(res.buf, res.size);
 
@@ -164,8 +164,8 @@ public class Demo : MonoBehaviour
         }
         {
             // log potential errors
-            BleApi.ErrorMessage res = new BleApi.ErrorMessage();
-            BleApi.GetError(out res);
+            BLE.Impl.ErrorMessage res = new BLE.Impl.ErrorMessage();
+            BLE.Impl.GetError(out res);
             if (lastError != res.msg)
             {
                 Debug.LogError(res.msg);
@@ -177,7 +177,7 @@ public class Demo : MonoBehaviour
 
     private void OnApplicationQuit()
     {
-        BleApi.Quit();
+        BLE.Impl.Quit();
     }
 
     public void StartStopDeviceScan()
@@ -187,7 +187,7 @@ public class Demo : MonoBehaviour
             // start new scan
             for (int i = scanResultRoot.childCount - 1; i >= 0; i--)
                 Destroy(scanResultRoot.GetChild(i).gameObject);
-            BleApi.StartDeviceScan();
+            BLE.Impl.StartDeviceScan();
             isScanningDevices = true;
             deviceScanButtonText.text = "Stop scan";
             deviceScanStatusText.text = "scanning";
@@ -197,7 +197,7 @@ public class Demo : MonoBehaviour
         {
             // stop scan
             isScanningDevices = false;
-            BleApi.StopDeviceScan();
+            BLE.Impl.StopDeviceScan();
             deviceScanButtonText.text = "Start scan";
             deviceScanStatusText.text = "stopped";
             Debug.Log("Ending Scan");
@@ -222,7 +222,7 @@ public class Demo : MonoBehaviour
         {
             // start new scan
             serviceDropdown.ClearOptions();
-            BleApi.ScanServices(selectedDeviceId);
+            BLE.Impl.ScanServices(selectedDeviceId);
             isScanningServices = true;
             serviceScanStatusText.text = "scanning";
             serviceScanButton.interactable = false;
@@ -240,7 +240,7 @@ public class Demo : MonoBehaviour
         {
             // start new scan
             characteristicDropdown.ClearOptions();
-            BleApi.ScanCharacteristics(selectedDeviceId, selectedServiceId);
+            BLE.Impl.ScanCharacteristics(selectedDeviceId, selectedServiceId);
             isScanningCharacteristics = true;
             characteristicScanStatusText.text = "scanning";
             characteristicScanButton.interactable = false;
@@ -258,14 +258,14 @@ public class Demo : MonoBehaviour
     public void Subscribe()
     {
         // no error code available in non-blocking mode
-        BleApi.SubscribeCharacteristic(selectedDeviceId, selectedServiceId, selectedCharacteristicId, false);
+        BLE.Impl.SubscribeCharacteristic(selectedDeviceId, selectedServiceId, selectedCharacteristicId, false);
         isSubscribed = true;
     }
 
     public void Write()
     {
         byte[] payload = Encoding.ASCII.GetBytes(writeInput.text);
-        BleApi.BLEData data = new BleApi.BLEData();
+        BLE.Impl.BLEData data = new BLE.Impl.BLEData();
         data.buf = new byte[512];
         data.size = (short)payload.Length;
         data.deviceId = selectedDeviceId;
@@ -274,6 +274,6 @@ public class Demo : MonoBehaviour
         for (int i = 0; i < payload.Length; i++)
             data.buf[i] = payload[i];
         // no error code available in non-blocking mode
-        BleApi.SendData(in data, false);
+        BLE.Impl.SendData(in data, false);
     }
 }

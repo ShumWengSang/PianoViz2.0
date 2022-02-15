@@ -22,7 +22,7 @@ public class BleWrapper
         public void Cancel()
         {
             cancelled = true;
-            BleApi.StopDeviceScan();
+            BLE.Impl.StopDeviceScan();
         }
 
         public void Reset()
@@ -75,15 +75,15 @@ public class BleWrapper
 
         scanThread = new Thread(() =>
         {
-            BleApi.StartDeviceScan();
-            BleApi.DeviceUpdate res = new BleApi.DeviceUpdate();
+            BLE.Impl.StartDeviceScan();
+            BLE.Impl.DeviceUpdate res = new BLE.Impl.DeviceUpdate();
             
             // Device ID is a string
             List<string> deviceIds = new List<string>();
             Dictionary<string, string> deviceName = new Dictionary<string, string>();
             Dictionary<string, bool> deviceIsConnectable = new Dictionary<string, bool>();
             
-            while (BleApi.PollDevice(ref res, true) != BleApi.ScanStatus.FINISHED)
+            while (BLE.Impl.PollDevice(ref res, true) != BLE.Impl.ScanStatus.FINISHED)
             {
                 if (!deviceIds.Contains(res.id))
                 {
@@ -118,19 +118,19 @@ public class BleWrapper
     /// <param name="serviceUuid"></param>
     public static void RetrieveProfile(string deviceId, string serviceUuid)
     {
-        BleApi.ScanServices(deviceId);
+        BLE.Impl.ScanServices(deviceId);
         // Get services
         
-        BleApi.Service service = new BleApi.Service();
-        while (BleApi.PollService(out service, true) != BleApi.ScanStatus.FINISHED)
+        BLE.Impl.Service service = new BLE.Impl.Service();
+        while (BLE.Impl.PollService(out service, true) != BLE.Impl.ScanStatus.FINISHED)
             Debug.Log("service found: " + service.uuid);
         // wait to avoid error
         Thread.Sleep(200);
         
         // Get characteristics
-        BleApi.ScanCharacteristics(deviceId, serviceUuid);
-        BleApi.Characteristic c = new BleApi.Characteristic();
-        while (BleApi.PollCharacteristic(out c, true) != BleApi.ScanStatus.FINISHED)
+        BLE.Impl.ScanCharacteristics(deviceId, serviceUuid);
+        BLE.Impl.Characteristic c = new BLE.Impl.Characteristic();
+        while (BLE.Impl.PollCharacteristic(out c, true) != BLE.Impl.ScanStatus.FINISHED)
             Debug.Log("characteristic found: " + c.uuid + ", user description: " + c.userDescription);
 
         return;
@@ -142,8 +142,8 @@ public class BleWrapper
     /// <returns></returns>
     public static string GetError()
     {
-        BleApi.ErrorMessage buf;
-        BleApi.GetError(out buf);
+        BLE.Impl.ErrorMessage buf;
+        BLE.Impl.GetError(out buf);
         return buf.msg;
     }
     
@@ -157,8 +157,8 @@ public class BleWrapper
     /// <exception cref="ArgumentOutOfRangeException"></exception>
     public static byte[] ReadBytes(bool blocking = true)
     {
-        BleApi.BLEData packageReceived;
-        bool result = BleApi.PollData(out packageReceived, blocking);
+        BLE.Impl.BLEData packageReceived;
+        bool result = BLE.Impl.PollData(out packageReceived, blocking);
 
         if (result)
         {
@@ -199,7 +199,7 @@ public class BleWrapper
         if (GetError() != "Ok")
             throw new Exception("Connection failed: " + GetError());
         Debug.Log("subscribing to characteristics...");
-        bool result = BleApi.SubscribeCharacteristic(deviceId, serviceUuid, characteristicUuid, false);
+        bool result = BLE.Impl.SubscribeCharacteristic(deviceId, serviceUuid, characteristicUuid, false);
         if (GetError() != "Ok" || !result)
             throw new Exception("Connection failed: " + GetError());
         IsConnected = true;
@@ -212,7 +212,7 @@ public class BleWrapper
     /// </summary>
     public void Close()
     {
-        BleApi.Quit();
+        BLE.Impl.Quit();
         IsConnected = false;
     }
     
