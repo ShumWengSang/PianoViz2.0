@@ -222,7 +222,8 @@ public class BLE
                 if (res.nameUpdated)
                 {
                     deviceIds.Add(res.id);
-                    deviceNames.Add(res.id, res.name);
+                    if(!deviceNames.ContainsKey(res.id))
+                        deviceNames.Add(res.id, res.name);
                 }
                 // connectable device
                 if (deviceIds.Contains(res.id) && res.isConnectable)
@@ -329,6 +330,7 @@ public class BLE
     {
         Impl.Quit();
         isConnected = false;
+        scanThread.Abort();
     }
 
     public static string GetError()
@@ -340,6 +342,6 @@ public class BLE
 
     ~BLE()
     {
-        Close();
+
     }
 }

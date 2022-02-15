@@ -7,7 +7,7 @@ using UnityEngine;
 public class BleModel : MonoBehaviour
 {
     // Change this to match your device.
-    public string targetDeviceName = "EnterDeviceNameHere";
+    public string targetDeviceName = "microKEY2-25 Air";
     string serviceUuid = "{03b80e5a-ede8-4b33-a751-6ce34ec4c700}";
     string[] characteristicUuids = {
          "{7772e5db-3868-4112-a1a9-f2669d106bf3}", 
@@ -17,6 +17,7 @@ public class BleModel : MonoBehaviour
     private BLE.BLEScan scan;
     private bool isScanning = false, isConnected = false;
     private string deviceId = null;
+    [SerializeField]
     private IDictionary<string, string> discoveredDevices = new Dictionary<string, string>();
     private int devicesCount = 0;
 
@@ -68,9 +69,37 @@ public class BleModel : MonoBehaviour
         try
         {
             scan.Cancel();
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.Log("Thread or object never initialized.\n" + e);
+        }
+        try
+        {
             ble.Close();
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.Log("Thread or object never initialized.\n" + e);
+        }
+        try
+        {
             scanningThread.Abort();
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.Log("Thread or object never initialized.\n" + e);
+        }
+        try
+        {
             connectionThread.Abort();
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.Log("Thread or object never initialized.\n" + e);
+        }
+        try
+        {
             readingThread.Abort();
         }
         catch (NullReferenceException e)
@@ -139,8 +168,9 @@ public class BleModel : MonoBehaviour
         Debug.Log("BLE.ScanDevices() started.");
         scan.Found = (_deviceId, deviceName) =>
         {
-            Debug.Log("found device with name: " + deviceName);
-            discoveredDevices.Add(_deviceId, deviceName);
+            Debug.Log("found device with name: [" + deviceName + "] id: [" + _deviceId + "]");
+            if(!discoveredDevices.ContainsKey(_deviceId))
+                discoveredDevices.Add(_deviceId, deviceName);
 
             if (deviceId == null && deviceName == targetDeviceName)
                 deviceId = _deviceId;

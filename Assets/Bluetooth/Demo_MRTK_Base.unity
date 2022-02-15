@@ -10067,7 +10067,6 @@ GameObject:
   - component: {fileID: 791563910}
   - component: {fileID: 791563909}
   - component: {fileID: 791563911}
-  - component: {fileID: 791563912}
   m_Layer: 0
   m_Name: Demo (1)
   m_TagString: Untagged
@@ -10135,19 +10134,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   channel: 0
---- !u!114 &791563912
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 791563908}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9f9920b59b1cebf40a6e1f7daf33c229, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  targetDeviceName: EnterDeviceNameHere
 --- !u!1001 &795236946
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -27256,7 +27242,7 @@ PrefabInstance:
     - target: {fileID: 8768934216549540927, guid: 8a1b16d97f6285647afc0f996a54f825,
         type: 3}
       propertyPath: volumeGlobal
-      value: 0.1
+      value: 0.02
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a1b16d97f6285647afc0f996a54f825, type: 3}
