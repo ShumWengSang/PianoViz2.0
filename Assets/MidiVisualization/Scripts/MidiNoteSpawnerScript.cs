@@ -95,21 +95,8 @@ public class MidiNoteSpawnerScript : MonoBehaviour
                 .AppendInterval(tweenTime)
                 .AppendCallback(() =>
                 {
-                    Debug.Log( mptkEvent.Command + ": " + (MidiNote)mptkEvent.Value);
-                    Debug.LogWarning(mptkEvent.Command + ": " + (MidiNote) mptkEvent.Value);
                     midiStreamPlayer.MPTK_PlayEvent(mptkEvent);
                 });
         }
-    }
-
-    private bool CheckSFExists()
-    {
-        if (MidiPlayerGlobal.ImSFCurrent == null || !MidiPlayerGlobal.MPTK_SoundFontLoaded)
-        {
-            //Debug.Log(MidiPlayerGlobal.ErrorNoSoundFont);
-            return false;
-        }
-
-        return true;
     }
 }
