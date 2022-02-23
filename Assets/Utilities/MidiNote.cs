@@ -132,4 +132,5 @@
     A10,
     A10Sharp,
     B10,
+    _MIDI_NOTE_COUNT
 }

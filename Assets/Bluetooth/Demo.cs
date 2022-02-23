@@ -143,14 +143,14 @@ public class Demo : MonoBehaviour
                     {
                         if (BleMidiBroadcaster.onNoteDown != null)
                         {
-                            BleMidiBroadcaster.onNoteDown(midi.note, midi.velocity);
+                            BleMidiBroadcaster.onNoteDown((MidiNote)midi.note, midi.velocity);
                         }
                     }
                     else if (midi.eventType == BleMIDI.EventType.NoteOff)
                     {
                         if (BleMidiBroadcaster.onNoteUp != null)
                         {
-                            BleMidiBroadcaster.onNoteUp(midi.note, midi.velocity);
+                            BleMidiBroadcaster.onNoteUp((MidiNote)midi.note, midi.velocity);
                         }
                     }
                 }

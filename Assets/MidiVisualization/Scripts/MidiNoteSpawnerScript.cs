@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using DG.Tweening;
+using MidiPianoInput;
 using MidiPlayerTK;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -82,21 +83,30 @@ public class MidiNoteSpawnerScript : MonoBehaviour
                                     tweenEase)
                                 //.SetEase(tweenEase)
                                 .OnComplete(() => { Destroy(instance); });
+
+                            // fire the event for the note playing once the instance has tweened to the keyboard
+                            MidiPianoEventManager.NotifyUpcomingNote(mptkEvent, Time.time + tweenTime, instance);
                         }
                         else
                         {
                             Debug.LogWarning("Note out of range: " + note);
+                            goto default; // since it's not in range, just play the note normally
                         }
                     }
                     break;
                 }
-            }
-            DOTween.Sequence()
-                .AppendInterval(tweenTime)
-                .AppendCallback(() =>
+                default:
                 {
-                    midiStreamPlayer.MPTK_PlayEvent(mptkEvent);
-                });
+                    DOTween.Sequence()
+                        .AppendInterval(tweenTime)
+                        .AppendCallback(() =>
+                        {
+                            midiStreamPlayer.MPTK_PlayEvent(mptkEvent);
+                        });
+                    break;
+                }
+            }
+            
         }
     }
 }

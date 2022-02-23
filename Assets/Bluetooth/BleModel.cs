@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -20,6 +21,8 @@ public class BleModel : MonoBehaviour
     [SerializeField]
     private IDictionary<string, string> discoveredDevices = new Dictionary<string, string>();
     private int devicesCount = 0;
+    private ConcurrentQueue<Tuple<MidiNote, int>> queuedNoteDownEvents = new ConcurrentQueue<Tuple<MidiNote, int>>();
+    private ConcurrentQueue<Tuple<MidiNote, int>> queuedNoteUpEvents = new ConcurrentQueue<Tuple<MidiNote, int>>();
 
     // BLE Threads 
     private Thread scanningThread, connectionThread, readingThread;
@@ -48,6 +51,22 @@ public class BleModel : MonoBehaviour
         {
             devicesCount = discoveredDevices.Count;
             // Todo: Update GUI event
+        }
+        
+        if (BleMidiBroadcaster.onNoteUp != null)
+        {
+            while (!queuedNoteUpEvents.IsEmpty && queuedNoteUpEvents.TryDequeue(out Tuple<MidiNote, int> parameters))
+            {
+                BleMidiBroadcaster.onNoteUp(parameters.Item1, parameters.Item2);
+            }
+        }
+        
+        if (BleMidiBroadcaster.onNoteDown != null)
+        {
+            while (!queuedNoteDownEvents.IsEmpty && queuedNoteDownEvents.TryDequeue(out Tuple<MidiNote, int> parameters))
+            {
+                BleMidiBroadcaster.onNoteDown(parameters.Item1, parameters.Item2);
+            }
         }
     }
 
@@ -141,17 +160,11 @@ public class BleModel : MonoBehaviour
                 resultingStr += midi.ToString() + "\n";
                 if (midi.eventType == BleMIDI.EventType.NoteOn)
                 {
-                    if (BleMidiBroadcaster.onNoteDown != null)
-                    {
-                        BleMidiBroadcaster.onNoteDown(midi.note, midi.velocity);
-                    }
+                    queuedNoteDownEvents.Enqueue(new Tuple<MidiNote, int>((MidiNote)midi.note, midi.velocity));
                 }
                 else if (midi.eventType == BleMIDI.EventType.NoteOff)
                 {
-                    if (BleMidiBroadcaster.onNoteUp != null)
-                    {
-                        BleMidiBroadcaster.onNoteUp(midi.note, midi.velocity);
-                    }
+                    queuedNoteUpEvents.Enqueue(new Tuple<MidiNote, int>((MidiNote)midi.note, midi.velocity));
                 }
             }
             if (!String.IsNullOrEmpty(resultingStr))
