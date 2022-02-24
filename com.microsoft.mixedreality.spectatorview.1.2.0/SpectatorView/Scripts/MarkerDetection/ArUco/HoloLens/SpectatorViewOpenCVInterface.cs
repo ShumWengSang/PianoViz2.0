@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License. See LICENSE in the project root for license information.
-
+// #define TRYTHIS
 using Microsoft.MixedReality.PhotoCapture;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -187,6 +187,39 @@ namespace Microsoft.MixedReality.SpectatorView
 
         public static Marker CreateMarkerFromPositionAndRotation(int id, Vector3 openCVPosition, Vector3 openCVRodriguesRotation, Matrix4x4 cameraToWorldMatrix)
         {
+
+#if TRYTHIS
+            openCVPosition.y *= -1f;
+
+            var angle = Mathf.Rad2Deg * openCVRodriguesRotation.magnitude;
+            var axis = openCVRodriguesRotation.normalized;
+            Quaternion q = Quaternion.AngleAxis(angle, axis);
+            Quaternion rotation = Quaternion.Euler(
+                -1.0f * q.eulerAngles.x,
+                q.eulerAngles.y,
+                -1.0f * q.eulerAngles.z) * Quaternion.Euler(0, 0, 180);
+
+
+            var tOpenCV = Matrix4x4.TRS(openCVPosition, rotation, Vector3.one);
+            var t = tOpenCV;
+            t.m20 *= -1.0f;
+            t.m21 *= -1.0f;
+            t.m22 *= -1.0f;
+            t.m23 *= -1.0f;
+
+            Matrix4x4 transformUnityCamera = t;
+
+            // Use camera to world transform to get world pose of marker
+            Matrix4x4 transformUnityWorld = cameraToWorldMatrix * transformUnityCamera;
+
+            // Apply updated transform to gameobject in world
+            var marker = new Marker(id, transformUnityWorld.GetColumn(3), Quaternion.LookRotation(transformUnityWorld.GetColumn(2), transformUnityWorld.GetColumn(1)));
+            return marker;
+#else
+            openCVPosition = new Vector3(1, 1, 1);
+            openCVRodriguesRotation = new Vector3(3, 3, 3);
+            cameraToWorldMatrix = new Matrix4x4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, 0), new Vector4(0, 0, -1, 0), new Vector4(0, 0, 0, 1));
+            Debug.Log("Camera to world: " + cameraToWorldMatrix.ToString());
             var angle = Mathf.Rad2Deg * openCVRodriguesRotation.magnitude;
             var axis = openCVRodriguesRotation.normalized;
             Quaternion rotationInOpenCVCameraSpace = Quaternion.AngleAxis(angle, axis);
@@ -203,7 +236,10 @@ namespace Microsoft.MixedReality.SpectatorView
             var rotationInUnityWorld = Quaternion.LookRotation(transformInUnityWorld.GetColumn(2), transformInUnityWorld.GetColumn(1));
 
             var marker = new Marker(id, positionInUnityWorld, rotationInUnityWorld);
+
+            Debug.Log("Position: " + positionInUnityWorld.ToString() + " Rot: " + rotationInUnityWorld.ToString());
             return marker;
+#endif
         }
 
         private bool IsValidPixelFormat(PixelFormat pixelFormat)
