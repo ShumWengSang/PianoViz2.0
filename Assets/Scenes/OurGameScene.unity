@@ -4184,7 +4184,7 @@ PrefabInstance:
     - target: {fileID: 8779034279059886464, guid: 3f1f46cbecbe08e46a303ccfdb5b498a,
         type: 3}
       propertyPath: OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: ScanBleDevices
+      value: StartScanHandler
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3f1f46cbecbe08e46a303ccfdb5b498a, type: 3}
@@ -10816,8 +10816,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f9920b59b1cebf40a6e1f7daf33c229, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characteristicID: 7772e5db-3868-4112-a1a9-f2669d106bf3
-  serviceID: 03b80e5a-ede8-4b33-a751-6ce34ec4c700
+  targetDeviceName: microKEY2-25 Air
 --- !u!114 &2117728619
 MonoBehaviour:
   m_ObjectHideFlags: 0
