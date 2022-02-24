@@ -6,6 +6,9 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 0
+    path: Assets/Scenes/OurGameScene.unity
+    guid: eb7342fbb712e1d438e108529d3eab1b
+  - enabled: 0
     path: Assets/Bluetooth/Demo_MRTK_Base.unity
     guid: b35a66e4ee084344c9abac1a41ba8c6c
   - enabled: 0

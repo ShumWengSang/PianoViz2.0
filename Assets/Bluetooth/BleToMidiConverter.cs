@@ -126,9 +126,9 @@ public class BleToMidiConverter
 
 public class BleMidiBroadcaster
 {
-    public delegate void OnNoteDown(int note, int velocity);
+    public delegate void OnNoteDown(MidiNote note, int velocity);
     public static OnNoteDown onNoteDown;
 
-    public delegate void OnNoteUp(int note, int velocity);
+    public delegate void OnNoteUp(MidiNote note, int velocity);
     public static OnNoteUp onNoteUp;
 }

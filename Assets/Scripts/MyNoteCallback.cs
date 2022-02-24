@@ -31,27 +31,27 @@ class MyNoteCallback : MonoBehaviour
         BleMidiBroadcaster.onNoteUp -= OnNoteUp;
     }
 
-    private void OnNoteDown(int note, int velocity)
+    private void OnNoteDown(MidiNote note, int velocity)
     {
         var notePlaying = new MPTKEvent()
         {
             Command = MPTKCommand.NoteOn,
-            Value = note,  //C5
+            Value = (int)note,  //C5
             Channel = channel,
-            Duration = 10000,
+            Duration = -1,
             Velocity = velocity,
             Delay = 0,
         };
         midiStreamPlayer.MPTK_PlayEvent(notePlaying);
-        _currentPlayingEvents[note] = notePlaying;
+        _currentPlayingEvents[(int)note] = notePlaying;
     }
 
-    private void OnNoteUp(int note, int velocity)
+    private void OnNoteUp(MidiNote note, int velocity)
     {
-        if (_currentPlayingEvents.ContainsKey(note))
+        if (_currentPlayingEvents.ContainsKey((int)note))
         {
-            midiStreamPlayer.MPTK_StopEvent(_currentPlayingEvents[note]);
-            _currentPlayingEvents.Remove(note);
+            midiStreamPlayer.MPTK_StopEvent(_currentPlayingEvents[(int)note]);
+            _currentPlayingEvents.Remove((int)note);
         }
     }
 

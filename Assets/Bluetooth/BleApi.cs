@@ -312,8 +312,8 @@ public class BLE
 
         if (result)
         {
-            Debug.Log("Size: " + packageReceived.size);
-            Debug.Log("From: " + packageReceived.deviceId);
+            // Debug.Log("Size: " + packageReceived.size);
+            // Debug.Log("From: " + packageReceived.deviceId);
 
             if (packageReceived.size > 512)
                 throw new ArgumentOutOfRangeException("Package too large.");
