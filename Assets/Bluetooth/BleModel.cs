@@ -44,7 +44,7 @@ public class BleModel : MonoBehaviour
             if (ble.isConnected != isConnected)
             {
                 // Todo: Change GUI event
-                ble.isConnected = isConnected;
+                isConnected = ble.isConnected;
             }
         }
         if(discoveredDevices.Count != devicesCount)
@@ -68,6 +68,16 @@ public class BleModel : MonoBehaviour
                 BleMidiBroadcaster.onNoteDown(parameters.Item1, parameters.Item2);
             }
         }
+    }
+
+    public bool IsScanning()
+    {
+        return isScanning;
+    }
+
+    public bool IsConnected()
+    {
+        return isConnected;
     }
 
     private void OnDestroy()
@@ -132,6 +142,7 @@ public class BleModel : MonoBehaviour
         devicesCount = 0;
         isScanning = true;
         discoveredDevices.Clear();
+        Debug.Log("scanning");
         scanningThread = new Thread(ScanBleDevices);
         scanningThread.Start();
     }
