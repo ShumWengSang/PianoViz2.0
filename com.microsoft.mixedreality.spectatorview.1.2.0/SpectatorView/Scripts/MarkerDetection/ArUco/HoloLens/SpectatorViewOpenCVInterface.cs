@@ -219,7 +219,7 @@ namespace Microsoft.MixedReality.SpectatorView
             openCVPosition = new Vector3(1, 1, 1);
             openCVRodriguesRotation = new Vector3(3, 3, 3);
             cameraToWorldMatrix = new Matrix4x4(new Vector4(1, 0, 0, 0), new Vector4(0, 1, 0, 0), new Vector4(0, 0, -1, 0), new Vector4(0, 0, 0, 1));
-            Debug.Log("Camera to world: " + cameraToWorldMatrix.ToString());
+
             var angle = Mathf.Rad2Deg * openCVRodriguesRotation.magnitude;
             var axis = openCVRodriguesRotation.normalized;
             Quaternion rotationInOpenCVCameraSpace = Quaternion.AngleAxis(angle, axis);
@@ -237,7 +237,7 @@ namespace Microsoft.MixedReality.SpectatorView
 
             var marker = new Marker(id, positionInUnityWorld, rotationInUnityWorld);
 
-            Debug.Log("Position: " + positionInUnityWorld.ToString() + " Rot: " + rotationInUnityWorld.ToString());
+
             return marker;
 #endif
         }

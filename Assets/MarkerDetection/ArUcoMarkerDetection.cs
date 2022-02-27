@@ -59,7 +59,10 @@ namespace ArUcoDetectionHoloLensUnity
         private int _frameCount = 0;
         public int skipFrames = 3;
 
-        public Camera debugCam;
+        public bool MarkerDetected
+        {
+            get; set;
+        } = false;
 
 #if ENABLE_WINMD_SUPPORT
         // Enable winmd support to include winmd files. Will not
@@ -100,6 +103,7 @@ namespace ArUcoDetectionHoloLensUnity
             StartCoroutine(DelayCoroutine());
 
             markerGo.transform.localScale = new Vector3(markerSize, markerSize, markerSize);
+            MarkerDetected = false;
         }
 
         async void OnDisable()
@@ -257,22 +261,32 @@ namespace ArUcoDetectionHoloLensUnity
 
                 foreach (var detectedMarker in detections)
                 {
+                    if(detectedMarker.Id == 1)
+                    {
+                        // Get pose from OpenCV and format for Unity
+                        Vector3 position = CvUtils.Vec3FromFloat3(detectedMarker.Position);
+                        position.y *= -1f;
+                        Quaternion rotation = CvUtils.RotationQuatFromRodrigues(CvUtils.Vec3FromFloat3(detectedMarker.Rotation));
+                        Matrix4x4 cameraToWorldUnity = CvUtils.Mat4x4FromFloat4x4(detectedMarker.CameraToWorldUnity);
+                        Matrix4x4 transformUnityCamera = CvUtils.TransformInUnitySpace(position, rotation);
 
-                    // Get pose from OpenCV and format for Unity
-                    Vector3 position = CvUtils.Vec3FromFloat3(detectedMarker.Position);
-                    position.y *= -1f;
-                    Quaternion rotation = CvUtils.RotationQuatFromRodrigues(CvUtils.Vec3FromFloat3(detectedMarker.Rotation));
-                    Matrix4x4 cameraToWorldUnity = CvUtils.Mat4x4FromFloat4x4(detectedMarker.CameraToWorldUnity);
-                    Matrix4x4 transformUnityCamera = CvUtils.TransformInUnitySpace(position, rotation);
+                        // Use camera to world transform to get world pose of marker
+                        Matrix4x4 transformUnityWorld = cameraToWorldUnity * transformUnityCamera;
 
-                    // Use camera to world transform to get world pose of marker
-                    Matrix4x4 transformUnityWorld = cameraToWorldUnity * transformUnityCamera;
+                        // Apply updated transform to gameobject in world
+                        //markerGo.transform.SetPositionAndRotation(
+                            //CvUtils.GetVectorFromMatrix(transformUnityWorld),
+                            //CvUtils.GetQuatFromMatrix(transformUnityWorld));
+                        markerGo.transform.position = CvUtils.GetVectorFromMatrix(transformUnityWorld);
 
-                    // Apply updated transform to gameobject in world
-                    markerGo.transform.SetPositionAndRotation(
-                        CvUtils.GetVectorFromMatrix(transformUnityWorld),
-                        CvUtils.GetQuatFromMatrix(transformUnityWorld));
-                    // Debug.Log("Position: " + CvUtils.GetVectorFromMatrix(transformUnityWorld).ToString() + " Rot: " + CvUtils.GetQuatFromMatrix(transformUnityWorld).ToString());
+                        //Quaternion q = CvUtils.GetQuatFromMatrix(transformUnityWorld);
+                        //float theta_y = Mathf.Atan2(q.y, q.w);
+                        //Quaternion yRotation = new Quaternion(0, Mathf.Sin(theta_y), 0, Mathf.Cos(theta_y));
+                        //markerGo.transform.localRotation = yRotation;
+                        Debug.Log("ID " + detectedMarker.Id.ToString() + " Position: " + CvUtils.GetVectorFromMatrix(transformUnityWorld).ToString() + " Rot: " + CvUtils.GetQuatFromMatrix(transformUnityWorld).ToString());
+
+                        MarkerDetected = true;
+                    }
                 }
             }
             // If no markers in scene, anchor marker go to last position

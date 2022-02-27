@@ -7,29 +7,42 @@ using DG.Tweening;
 public class MarkerDetection : MonoBehaviour
 {
     public ArUcoMarkerDetection marker;
-    public Transform gameObjectToMove;
+    public MarkerProgressIndicator progressIndicator;
 
-    private void OnEnable()
+    private void Start()
     {
-        
+        // StartDetection();
     }
 
-
-    private void OnDisable()
+    public bool Detecting()
     {
-
+        return !marker.MarkerDetected;
     }
 
     public void StartDetection()
     {
-        marker.enabled = true;
-
+        progressIndicator.StartProgressIndicator();
+        
+        
         Sequence seq = DOTween.Sequence();
-        seq.InsertCallback(10.0f, () => { StopDetecting(); });
+        seq.InsertCallback(0.2f, () => { marker.enabled = true; });
+
+        StartCoroutine(WaitForStopDetection());
     }
 
     public void StopDetecting()
     {
         marker.enabled = false;
+    }
+
+    IEnumerator WaitForStopDetection()
+    {
+        while (Detecting())
+        {
+            yield return null;
+        }
+        yield return new WaitForSeconds(1.0f);
+        StopDetecting();
+        this.enabled = false;
     }
 }
