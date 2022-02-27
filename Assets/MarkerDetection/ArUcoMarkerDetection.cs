@@ -279,10 +279,10 @@ namespace ArUcoDetectionHoloLensUnity
                             //CvUtils.GetQuatFromMatrix(transformUnityWorld));
                         markerGo.transform.position = CvUtils.GetVectorFromMatrix(transformUnityWorld);
 
-                        //Quaternion q = CvUtils.GetQuatFromMatrix(transformUnityWorld);
-                        //float theta_y = Mathf.Atan2(q.y, q.w);
-                        //Quaternion yRotation = new Quaternion(0, Mathf.Sin(theta_y), 0, Mathf.Cos(theta_y));
-                        //markerGo.transform.localRotation = yRotation;
+                        Quaternion q = CvUtils.GetQuatFromMatrix(transformUnityWorld);
+                        float theta_y = Mathf.Atan2(q.y, q.w);
+                        Quaternion yRotation = new Quaternion(0, Mathf.Sin(theta_y), 0, Mathf.Cos(theta_y));
+                        markerGo.transform.localRotation = yRotation;
                         Debug.Log("ID " + detectedMarker.Id.ToString() + " Position: " + CvUtils.GetVectorFromMatrix(transformUnityWorld).ToString() + " Rot: " + CvUtils.GetQuatFromMatrix(transformUnityWorld).ToString());
 
                         MarkerDetected = true;
