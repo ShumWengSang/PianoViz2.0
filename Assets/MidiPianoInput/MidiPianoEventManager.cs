@@ -1,4 +1,6 @@
-﻿using System;
+﻿// #define PIANO_EVENT_LOGGING
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using MidiPlayerTK;
@@ -69,7 +71,9 @@ namespace MidiPianoInput
                     
                     MPTKEvent mptkEvent = noteEvents.Peek().mptkEvent;
                     MidiNote note = (MidiNote) mptkEvent.Value;
+#if PIANO_EVENT_LOGGING
                     Debug.Log("player failed to press the note '" + note + "' in time");
+#endif
                     
                     // delete the note to show that the user failed to play it in time
                     Destroy(noteEvents.Peek().noteVisualization);
@@ -90,7 +94,9 @@ namespace MidiPianoInput
             Queue<NoteEventInfo> anticipated = anticipatedNoteEvents[(int) note];
             if (!anticipated.Any())
             {
+#if PIANO_EVENT_LOGGING
                 Debug.Log("the note '" + note + "' was played unexpectedly");
+#endif
                 return;
             }
             
@@ -101,7 +107,9 @@ namespace MidiPianoInput
                 float error = nextNote.fireTime - Time.time;
                 if (Mathf.Abs(error) < maxTimeDelta)
                 {
+#if PIANO_EVENT_LOGGING
                     Debug.Log("<color=green>player successfully pressed '" + note + "' with error: " + error + "</color>");
+#endif
                     midiStreamPlayer.MPTK_PlayEvent(nextNote.mptkEvent);
 
                     // wait for a release now at the correct time
@@ -111,7 +119,9 @@ namespace MidiPianoInput
                 }
                 else
                 {
+#if PIANO_EVENT_LOGGING
                     Debug.Log("player pressed '" + note + "' too early");
+#endif
                     
                     // delete the note to show that the user played it too early
                     Destroy(nextNote.noteVisualization);
@@ -126,7 +136,9 @@ namespace MidiPianoInput
             Queue<NoteEventInfo> anticipated = anticipatedNoteEvents[(int) note];
             if (!anticipated.Any())
             {
+#if PIANO_EVENT_LOGGING
                 Debug.Log("the note '" + note + "' was released unexpectedly");
+#endif
                 return;
             }
 
@@ -137,15 +149,21 @@ namespace MidiPianoInput
                 // if the note is pressed at the correct(ish) time, reward the player
                 if (error > maxTimeDelta)
                 {
+#if PIANO_EVENT_LOGGING
                     Debug.Log("player released '" + note + "' too early");
+#endif
                 }
                 else if (error < -maxTimeDelta)
                 {
+#if PIANO_EVENT_LOGGING
                     Debug.Log("player released '" + note + "' too late");
+#endif
                 }
                 else
                 {
+#if PIANO_EVENT_LOGGING
                     Debug.Log("<color=green>player successfully released '" + note + "' with delay: " + (nextNote.fireTime - Time.time) + "</color>");
+#endif
                 }
                 
                 midiStreamPlayer.MPTK_StopEvent(nextNote.mptkEvent);

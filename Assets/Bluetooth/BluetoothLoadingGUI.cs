@@ -10,7 +10,9 @@ public class BluetoothLoadingGUI : MonoBehaviour
     [SerializeField] private BleModel bleModel;
     [SerializeField] private Ease rotationEase = Ease.InOutCirc;
     [SerializeField] private float rotationDuration = 1f;
+    [SerializeField] private Transform loadingCircle;
     public UnityEvent OnConnected;
+    public UnityEvent OnStartup;
     
     // Start is called before the first frame update
     void Start()
@@ -20,8 +22,10 @@ public class BluetoothLoadingGUI : MonoBehaviour
             bleModel.StartScanHandler();
         }
 
-        transform.DOBlendableLocalRotateBy(new Vector3(0f, 0f, 360f), rotationDuration, RotateMode.FastBeyond360)
+        loadingCircle.DOBlendableLocalRotateBy(new Vector3(0f, 0f, 360f), rotationDuration, RotateMode.FastBeyond360)
             .SetEase(rotationEase).SetLoops(-1);
+        
+        OnStartup.Invoke();
     }
 
     // Update is called once per frame

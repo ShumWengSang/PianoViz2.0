@@ -293,7 +293,8 @@ namespace ArUcoDetectionHoloLensUnity
             else
             {
                 // Add a world anchor to the attached gameobject
-                markerGo.AddComponent<WorldAnchor>();
+                if(!markerGo.GetComponent<WorldAnchor>() != null)
+                    markerGo.AddComponent<WorldAnchor>();
                 _isWorldAnchored = true;
             }
             myText.text = "Began streaming sensor frames. Double tap to end streaming.";
