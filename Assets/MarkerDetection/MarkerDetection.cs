@@ -3,15 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using ArUcoDetectionHoloLensUnity;
 using DG.Tweening;
+using UnityEngine.Events;
 
 public class MarkerDetection : MonoBehaviour
 {
     public ArUcoMarkerDetection marker;
     public MarkerProgressIndicator progressIndicator;
+    public UnityEvent onStartup;
 
     private void Start()
     {
-        // StartDetection();
+        onStartup.Invoke();
     }
 
     public bool Detecting()

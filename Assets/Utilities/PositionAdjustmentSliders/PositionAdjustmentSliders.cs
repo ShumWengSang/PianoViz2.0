@@ -1,5 +1,5 @@
 ﻿
-#define POSITIONING_LOGGING
+//#define POSITIONING_LOGGING
 
 using System.Collections;
 using System.Collections.Generic;
@@ -34,7 +34,7 @@ public class PositionAdjustmentSliders : MonoBehaviour
         
 #if POSITIONING_LOGGING
         if (newPosition != transformToSet.localPosition)
-            Debug.Log("moved object to:" + newPosition);
+            Debug.Log("moved object to: (" + newPosition.x + ", " + newPosition.y + ", " + newPosition.z + ")");
 #endif
 
         transformToSet.localPosition = newPosition;
