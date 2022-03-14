@@ -39,6 +39,16 @@ public class ShearTransform : MonoBehaviour
             {
                 childRenderer.sharedMaterial.SetMatrix("_ShearInjection", shearInjection);
             }
+
+            
+            MeshFilter meshFilter = childRenderer.GetComponent<MeshFilter>();
+            if (meshFilter)
+            {
+                Mesh mesh = meshFilter.sharedMesh;
+                Bounds meshBounds = mesh.bounds;
+                meshBounds.extents = new Vector3(10000, 10000, 10000);
+                mesh.bounds = meshBounds;
+            }
         }
     }
 }

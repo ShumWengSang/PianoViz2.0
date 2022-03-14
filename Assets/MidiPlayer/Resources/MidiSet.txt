@@ -94,12 +94,14 @@
     <string>Sibelius - Romance</string>
     <string>Take 5 - by Paul Desmond</string>
     <string>Tchaikovsky - Flower Waltz</string>
+    <string>Tetris Theme</string>
     <string>Tetris2</string>
     <string>The Christmas Song</string>
     <string>To Make the End of Battle</string>
     <string>Van Morrison - Moondance</string>
     <string>Van Morrison - Wild Nights</string>
     <string>Void World's 2nd Half</string>
+    <string>Wii Channels - Mii Channel</string>
     <string>WishYouWereHere</string>
     <string>Yves Montand - A bicyclette</string>
     <string>Zagronia - Dw1gOver</string>

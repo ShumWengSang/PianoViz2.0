@@ -180,7 +180,7 @@ public class BleModel : MonoBehaviour
             }
             if (!String.IsNullOrEmpty(resultingStr))
             {
-                Debug.Log(resultingStr);
+                //Debug.Log(resultingStr);
             }
             Thread.Sleep(10);
         }

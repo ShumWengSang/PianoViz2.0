@@ -16,10 +16,7 @@ using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Input;
 using System.Threading;
 using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
-#endif
-
-using UnityEngine;
-using UnityEngine.UI;
+using UnityEngine.Events;
 
 //  namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
 
@@ -60,6 +57,8 @@ namespace ArUcoDetectionHoloLensUnity
         private bool _mediaFrameSourceGroupsStarted = false;
         private int _frameCount = 0;
         public int skipFrames = 3;
+
+        public UnityEvent onMarkerDetected;
 
         public bool MarkerDetected
         {
@@ -106,6 +105,12 @@ namespace ArUcoDetectionHoloLensUnity
 
             markerGo.transform.localScale = new Vector3(markerSize, markerSize, markerSize);
             MarkerDetected = false;
+            
+            
+#if !ENABLE_WINMD_SUPPORT
+            // if marker detection isn't supported, just pretend we found it
+            onMarkerDetected.Invoke();
+#endif
         }
 
         async void OnDisable()
@@ -287,6 +292,7 @@ namespace ArUcoDetectionHoloLensUnity
                         markerGo.transform.localRotation = yRotation;
                         Debug.Log("ID " + detectedMarker.Id.ToString() + " Position: " + CvUtils.GetVectorFromMatrix(transformUnityWorld).ToString() + " Rot: " + CvUtils.GetQuatFromMatrix(transformUnityWorld).ToString());
 
+                        onMarkerDetected.Invoke();
                         MarkerDetected = true;
                     }
                 }

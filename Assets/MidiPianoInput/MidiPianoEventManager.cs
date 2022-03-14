@@ -1,4 +1,4 @@
-﻿// #define PIANO_EVENT_LOGGING
+﻿//#define PIANO_EVENT_LOGGING
 
 using System;
 using System.Collections.Generic;
@@ -31,20 +31,47 @@ namespace MidiPianoInput
     
     public class MidiPianoEventManager : MonoBehaviour
     {
-        private static Queue<NoteEventInfo>[] anticipatedNoteEvents = new Queue<NoteEventInfo>[(int) MidiNote._MIDI_NOTE_COUNT];
+        private Queue<NoteEventInfo>[] anticipatedNoteEvents = new Queue<NoteEventInfo>[(int) MidiNote._MIDI_NOTE_COUNT];
         
         [SerializeField] private MidiStreamPlayer midiStreamPlayer;
         
         [SerializeField, Tooltip("Maximum amount of time the user can be either early or late to pressing a key")] 
         private float maxTimeDelta = .5f;
 
-        private void OnEnable()
+        [SerializeField] private Material successMaterial;
+
+        private bool _gameActive = false;
+        public bool gameActive
+        {
+            get { return _gameActive; }
+            set {
+                if (value != _gameActive)
+                {
+                    if (value)
+                    {
+                        _gameActive = true;
+                        OnGameActive();
+                    }
+                    else
+                    {
+                        gameActive = false;
+                        OnGameInactive();
+                    }
+                }
+            }
+        }
+        
+        
+        [SerializeField] private GameSetupInstructionsGUI gameSetup;
+        private MidiNote lowerC = 0;
+
+        private void OnGameActive()
         {
             BleMidiBroadcaster.onNoteDown += OnKeyboardNotePress;
             BleMidiBroadcaster.onNoteUp += OnKeyboardNoteRelease;
         }
 
-        private void OnDisable()
+        private void OnGameInactive()
         {
             BleMidiBroadcaster.onNoteDown -= OnKeyboardNotePress;
             BleMidiBroadcaster.onNoteUp -= OnKeyboardNoteRelease;
@@ -56,10 +83,32 @@ namespace MidiPianoInput
             {
                 anticipatedNoteEvents[i] = new Queue<NoteEventInfo>();
             }
+            
+            gameSetup.AssignLowerCEvent += (note, velocity) =>
+            {
+                lowerC = note;
+            };
+        }
+
+        private void OnMistake(MidiNote note, int velocity)
+        {
+            MPTKEvent mistakeNote = new MPTKEvent()
+            {
+                Command = MPTKCommand.NoteOn,
+                Value = (int)note - 12, // play in the wrong octive so it sound extra wrong
+                Channel = 0,
+                Duration = 250,
+                Velocity = velocity,
+                Delay = 0,
+            };
+            midiStreamPlayer.MPTK_PlayEvent(mistakeNote);
         }
 
         private void Update()
         {
+            if (!gameActive)
+                return;
+            
             // look for notes that the user completely failed to press in time
             foreach (Queue<NoteEventInfo> noteEvents in anticipatedNoteEvents)
             {
@@ -83,20 +132,22 @@ namespace MidiPianoInput
         }
 
         // called to set the time when this note "should" be played by the user
-        public static void NotifyUpcomingNote(MPTKEvent mptkEvent, float noteTime, GameObject noteVisualization)
+        public void NotifyUpcomingNote(MPTKEvent mptkEvent, int keyIndex, float noteTime, GameObject noteVisualization)
         {
             Assert.AreEqual(MPTKCommand.NoteOn, mptkEvent.Command);
-            anticipatedNoteEvents[mptkEvent.Value].Enqueue(new NoteEventInfo(mptkEvent, noteTime, noteVisualization));
+            anticipatedNoteEvents[keyIndex].Enqueue(new NoteEventInfo(mptkEvent, noteTime, noteVisualization));
         }
 
         private void OnKeyboardNotePress(MidiNote note, int velocity)
         {
-            Queue<NoteEventInfo> anticipated = anticipatedNoteEvents[(int) note];
+            int noteIndex = note - lowerC;
+            Queue<NoteEventInfo> anticipated = anticipatedNoteEvents[noteIndex];
             if (!anticipated.Any())
             {
 #if PIANO_EVENT_LOGGING
                 Debug.Log("the note '" + note + "' was played unexpectedly");
 #endif
+                OnMistake(note, velocity);
                 return;
             }
             
@@ -110,6 +161,7 @@ namespace MidiPianoInput
 #if PIANO_EVENT_LOGGING
                     Debug.Log("<color=green>player successfully pressed '" + note + "' with error: " + error + "</color>");
 #endif
+                    nextNote.noteVisualization.GetComponent<Renderer>().material = successMaterial;
                     midiStreamPlayer.MPTK_PlayEvent(nextNote.mptkEvent);
 
                     // wait for a release now at the correct time
@@ -122,6 +174,7 @@ namespace MidiPianoInput
 #if PIANO_EVENT_LOGGING
                     Debug.Log("player pressed '" + note + "' too early");
 #endif
+                    OnMistake(note, velocity);
                     
                     // delete the note to show that the user played it too early
                     Destroy(nextNote.noteVisualization);
@@ -133,7 +186,8 @@ namespace MidiPianoInput
 
         private void OnKeyboardNoteRelease(MidiNote note, int velocity)
         {
-            Queue<NoteEventInfo> anticipated = anticipatedNoteEvents[(int) note];
+            int noteIndex = note - lowerC;
+            Queue<NoteEventInfo> anticipated = anticipatedNoteEvents[noteIndex];
             if (!anticipated.Any())
             {
 #if PIANO_EVENT_LOGGING

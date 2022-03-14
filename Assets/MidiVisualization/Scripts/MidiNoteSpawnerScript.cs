@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using MidiPianoInput;
 using MidiPlayerTK;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Serialization;
 
 public class MidiNoteSpawnerScript : MonoBehaviour
 {
@@ -18,6 +20,8 @@ public class MidiNoteSpawnerScript : MonoBehaviour
 
     // transform who's children is all the active notes in que to be played
     [SerializeField] private Transform activeNotes;
+
+    [FormerlySerializedAs("eventManager")] [SerializeField] private MidiPianoEventManager midiPianoEventManager;
 
     [SerializeField] private MidiNote startingNote;
     [SerializeField] private int midiChanel = 0;
@@ -40,11 +44,9 @@ public class MidiNoteSpawnerScript : MonoBehaviour
         Assert.IsTrue(MidiPlayerGlobal.MPTK_SoundFontLoaded);
         Assert.IsTrue((midiFilePlayer != null));
 
-        // If call is already set from the inspector there is no need to set another listeneer
-        if (!midiFilePlayer.OnEventNotesMidi.HasEvent())
-        {
-            midiFilePlayer.OnEventNotesMidi.AddListener(HandleMidiEvents);
-        }
+        midiFilePlayer.enabled = true;
+        midiFilePlayer.OnEventNotesMidi.AddListener(HandleMidiEvents);
+
     }
 
     private void PopulateKeyArray(Transform parent, ref Transform[] keys)
@@ -85,13 +87,17 @@ public class MidiNoteSpawnerScript : MonoBehaviour
                                 .OnComplete(() => { Destroy(instance); });
 
                             // fire the event for the note playing once the instance has tweened to the keyboard
-                            MidiPianoEventManager.NotifyUpcomingNote(mptkEvent, Time.time + tweenTime, instance);
+                            midiPianoEventManager.NotifyUpcomingNote(mptkEvent, noteIndex, Time.time + tweenTime, instance);
                         }
                         else
                         {
                             Debug.LogWarning("Note out of range: " + note);
                             goto default; // since it's not in range, just play the note normally
                         }
+                    }
+                    else
+                    {
+                        //goto default;
                     }
                     break;
                 }
