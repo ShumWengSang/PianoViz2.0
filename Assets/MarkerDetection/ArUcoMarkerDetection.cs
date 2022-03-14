@@ -11,14 +11,16 @@ using Windows.Perception.Spatial;
 
 // Include winrt components
 using HoloLensForCV;
-#endif
 
-using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.XR.WSA;
 using UnityEngine.XR.WSA.Input;
 using System.Threading;
 using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
+#endif
+
+using UnityEngine;
+using UnityEngine.UI;
+
 //  namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
 
 namespace ArUcoDetectionHoloLensUnity

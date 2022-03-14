@@ -42,7 +42,8 @@ Shader "SV/OcclusionMask"
 
             Texture2D _BodyMaskTexture;
             Texture2D _DepthTexture;
-            sampler2D_float _LastCameraDepthTexture;
+            // sampler2D_float _LastCameraDepthTexture;
+            UNITY_DECLARE_DEPTH_TEXTURE(_LastCameraDepthTexture);
             SamplerState sampler_point_clamp;
 
             fixed4 frag (v2f i) : SV_Target
