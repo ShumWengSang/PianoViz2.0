@@ -9,14 +9,18 @@ using Windows.UI.Xaml;
 using Windows.Graphics.Imaging;
 using Windows.Perception.Spatial;
 
-// Include winrt components
-using HoloLensForCV;
 
-using UnityEngine.XR.WSA;
+// Include winrt components
 using UnityEngine.XR.WSA.Input;
+using HoloLensForCV;
+#endif
+using UnityEngine.XR.WSA;
+
 using System.Threading;
 using Microsoft.MixedReality.Toolkit.Experimental.Utilities;
 using UnityEngine.Events;
+using UnityEngine;
+using UnityEngine.UI;
 
 //  namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
 
@@ -91,7 +95,7 @@ namespace ArUcoDetectionHoloLensUnity
         private SpatialCoordinateSystem _unityCoordinateSystem;
 #endif
 
-        #region UnityMethods
+#region UnityMethods
 
         // Use this for initialization
         async void OnEnable()
@@ -126,12 +130,12 @@ namespace ArUcoDetectionHoloLensUnity
         /// <returns></returns>
         IEnumerator DelayCoroutine()
         {
-            Debug.Log("Started Coroutine at timestamp : " + Time.time);
+            //Debug.Log("Started Coroutine at timestamp : " + Time.time);
 
             // YieldInstruction that waits for 2 seconds.
             yield return new WaitForSeconds(2);
 
-            Debug.Log("Finished Coroutine at timestamp : " + Time.time);
+            //Debug.Log("Finished Coroutine at timestamp : " + Time.time);
         }
 
         // Update is called once per frame
@@ -158,7 +162,7 @@ namespace ArUcoDetectionHoloLensUnity
             await StopHoloLensMediaFrameSourceGroup();
         }
 
-        #endregion
+#endregion
 
         async Task StartHoloLensMediaFrameSourceGroups()
         {
@@ -167,18 +171,18 @@ namespace ArUcoDetectionHoloLensUnity
             myText.text = "Initializing MediaFrameSourceGroups...";
 
             // PV
-            Debug.Log("HoloLensForCVUnity.ArUcoDetection.StartHoloLensMediaFrameSourceGroup: Setting up sensor frame streamer");
+            //Debug.Log("HoloLensForCVUnity.ArUcoDetection.StartHoloLensMediaFrameSourceGroup: Setting up sensor frame streamer");
             _sensorType = (SensorType)sensorTypePv;
             _sensorFrameStreamerPv = new SensorFrameStreamer();
             _sensorFrameStreamerPv.Enable(_sensorType);
 
             // Spatial perception
-            Debug.Log("HoloLensForCVUnity.ArUcoDetection.StartHoloLensMediaFrameSourceGroup: Setting up spatial perception");
+            //Debug.Log("HoloLensForCVUnity.ArUcoDetection.StartHoloLensMediaFrameSourceGroup: Setting up spatial perception");
             _spatialPerception = new SpatialPerception();
 
             // Enable media frame source groups
             // PV
-            Debug.Log("HoloLensForCVUnity.ArUcoDetection.StartHoloLensMediaFrameSourceGroup: Setting up the media frame source group");
+            //Debug.Log("HoloLensForCVUnity.ArUcoDetection.StartHoloLensMediaFrameSourceGroup: Setting up the media frame source group");
 
             // Check if using research mode sensors
             if (sensorTypePv == CvUtils.SensorTypeUnity.PhotoVideo)
@@ -206,7 +210,7 @@ namespace ArUcoDetectionHoloLensUnity
             myText.text = "Starting MediaFrameSourceGroups...";
 
             // Photo video
-            Debug.Log("HoloLensForCVUnity.ArUcoDetection.StartHoloLensMediaFrameSourceGroup: Starting the media frame source group");
+            //Debug.Log("HoloLensForCVUnity.ArUcoDetection.StartHoloLensMediaFrameSourceGroup: Starting the media frame source group");
             await _pvMediaFrameSourceGroup.StartAsync();
             _mediaFrameSourceGroupsStarted = true;
 
@@ -235,7 +239,7 @@ namespace ArUcoDetectionHoloLensUnity
 
         // Get the latest frame from hololens media
         // frame source group -- not needed
-#if ENABLE_WINMD_SUPPORT           
+#if ENABLE_WINMD_SUPPORT
         void UpdateArUcoDetections(IList<DetectedArUcoMarker> detections)
         {
             if (!_mediaFrameSourceGroupsStarted ||
@@ -249,6 +253,7 @@ namespace ArUcoDetectionHoloLensUnity
             //IList<DetectedArUcoMarker> detectedArUcoMarkers = _pvMediaFrameSourceGroup.GetArUcoDetections();
             //_pvMediaFrameSourceGroup.DetectArUcoMarkers(_sensorType);
 
+            Debug.Log("Size: " + detections.Count);
             // If we detect a marker, display
             if (detections.Count != 0)
             {
@@ -268,7 +273,7 @@ namespace ArUcoDetectionHoloLensUnity
 
                 foreach (var detectedMarker in detections)
                 {
-                    if(detectedMarker.Id == 1)
+                    if(detectedMarker.Id == 49)
                     {
                         // Get pose from OpenCV and format for Unity
                         Vector3 position = CvUtils.Vec3FromFloat3(detectedMarker.Position);
@@ -290,11 +295,12 @@ namespace ArUcoDetectionHoloLensUnity
                         float theta_y = Mathf.Atan2(q.y, q.w);
                         Quaternion yRotation = new Quaternion(0, Mathf.Sin(theta_y), 0, Mathf.Cos(theta_y));
                         markerGo.transform.localRotation = yRotation;
-                        Debug.Log("ID " + detectedMarker.Id.ToString() + " Position: " + CvUtils.GetVectorFromMatrix(transformUnityWorld).ToString() + " Rot: " + CvUtils.GetQuatFromMatrix(transformUnityWorld).ToString());
+                        // Debug.Log("ID " + detectedMarker.Id.ToString() + " Position: " + CvUtils.GetVectorFromMatrix(transformUnityWorld).ToString() + " Rot: " + CvUtils.GetQuatFromMatrix(transformUnityWorld).ToString());
 
                         onMarkerDetected.Invoke();
                         MarkerDetected = true;
                     }
+                    Debug.Log("ID " + detectedMarker.Id.ToString());
                 }
             }
             // If no markers in scene, anchor marker go to last position
@@ -305,7 +311,7 @@ namespace ArUcoDetectionHoloLensUnity
                     markerGo.AddComponent<WorldAnchor>();
                 _isWorldAnchored = true;
             }
-            myText.text = "Began streaming sensor frames. Double tap to end streaming.";
+            //myText.text = "Began streaming sensor frames. Double tap to end streaming.";
         }
 #endif
 
@@ -341,7 +347,7 @@ namespace ArUcoDetectionHoloLensUnity
             await StopHoloLensMediaFrameSourceGroup();
         }
 
-        #region ComImport
+#region ComImport
         // https://docs.microsoft.com/en-us/windows/uwp/audio-video-camera/imaging
         [ComImport]
         [Guid("5B0D3235-4DBA-4D44-865E-8F1D0E4FD04D")]
@@ -350,7 +356,7 @@ namespace ArUcoDetectionHoloLensUnity
         {
             void GetBuffer(out byte* buffer, out uint capacity);
         }
-        #endregion
+#endregion
 
 #if ENABLE_WINMD_SUPPORT
         // Get byte array from software bitmap.
