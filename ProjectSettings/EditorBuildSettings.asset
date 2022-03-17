@@ -12,9 +12,6 @@ EditorBuildSettings:
     path: Assets/Bluetooth/Demo_MRTK_Base.unity
     guid: b35a66e4ee084344c9abac1a41ba8c6c
   - enabled: 0
-    path: Packages/com.microsoft.mixedreality.spectatorview/SpectatorView/Scenes/SpectatorView.ARFoundation.Spectator.unity
-    guid: 1e6ff34bb8b2cbb468b958b46f1aa620
-  - enabled: 0
     path: Assets/Scenes/arUco Marker Scene.unity
     guid: dd023456f605156469d6e05e84f318ef
   - enabled: 0
