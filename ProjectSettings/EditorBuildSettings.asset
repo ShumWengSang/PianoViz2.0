@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/OurGameScene.unity
     guid: eb7342fbb712e1d438e108529d3eab1b
   - enabled: 0
@@ -20,4 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/RolandTestScene.unity
     guid: e1a383c320c1a7b4fb0efa0665ae4267
+  - enabled: 1
+    path: Assets/Scenes/KeyboardEffects.unity
+    guid: 9764132804d376d418d32ccdf2abffcf
   m_configObjects: {}

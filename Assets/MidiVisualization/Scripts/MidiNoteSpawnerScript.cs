@@ -18,6 +18,8 @@ public class MidiNoteSpawnerScript : MonoBehaviour
     // transform who's children is the ending pos of all the keys
     [SerializeField] private Transform endTransform;
 
+    [SerializeField] private Transform keyboard;
+
     // transform who's children is all the active notes in que to be played
     [SerializeField] private Transform activeNotes;
 
@@ -80,6 +82,7 @@ public class MidiNoteSpawnerScript : MonoBehaviour
                             // instantiate a note
                             GameObject instance = Instantiate(startKeys[noteIndex].gameObject, activeNotes, true);
                             NoteTweenScript script = instance.AddComponent<NoteTweenScript>();
+                            script.keyboardKeyHighlights = keyboard.GetChild(noteIndex).GetComponent<keyboardKeyHighlights>();
 
                             script.DOMoveScale(endKeys[noteIndex].position, tweenTime, mptkEvent.Duration * 0.001f,
                                     tweenEase)

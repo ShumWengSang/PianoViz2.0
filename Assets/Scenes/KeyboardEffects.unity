@@ -6561,9 +6561,31 @@ MonoBehaviour:
             to Begin
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 5227580667872280874}
+        m_MethodName: SetModeIrridescentPulse
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   AfterWaitForLowerC:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5227580667872280874}
+        m_MethodName: SetModeRainbowInOut
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1260052023
 GameObject:
   m_ObjectHideFlags: 0
@@ -16937,6 +16959,7 @@ MonoBehaviour:
   midiStreamPlayer: {fileID: 1604925154785864207}
   startTransform: {fileID: 520635764490080101}
   endTransform: {fileID: 5471926937964204300}
+  keyboard: {fileID: 7046578069959898083}
   activeNotes: {fileID: 5316321351310682208}
   midiPianoEventManager: {fileID: 8067167223580734447}
   startingNote: 60
@@ -18616,7 +18639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f7605271650c244ab4ff54ba445913b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: 1
+  mode: 0
   materials: {fileID: 11400000, guid: f2d1036099154654ab3cf743e2a6e269, type: 2}
 --- !u!4 &5235198541900893180
 Transform:
