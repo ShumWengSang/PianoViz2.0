@@ -24,6 +24,11 @@ using UnityEngine.UI;
 
 //  namespace Microsoft.MixedReality.Toolkit.Experimental.ColorPicker
 
+[System.Serializable]
+public class MarkerDetectedEvent : UnityEvent<Transform>
+{
+}
+
 namespace ArUcoDetectionHoloLensUnity
 {
     public class ArUcoMarkerDetection : MonoBehaviour
@@ -62,7 +67,7 @@ namespace ArUcoDetectionHoloLensUnity
         private int _frameCount = 0;
         public int skipFrames = 3;
 
-        public UnityEvent onMarkerDetected;
+        public MarkerDetectedEvent onMarkerDetected;
 
         public bool MarkerDetected
         {
@@ -113,7 +118,7 @@ namespace ArUcoDetectionHoloLensUnity
             
 #if !ENABLE_WINMD_SUPPORT
             // if marker detection isn't supported, just pretend we found it
-            onMarkerDetected.Invoke();
+            onMarkerDetected.Invoke(null);
 #endif
         }
 
@@ -273,7 +278,7 @@ namespace ArUcoDetectionHoloLensUnity
 
                 foreach (var detectedMarker in detections)
                 {
-                    if(detectedMarker.Id == 49)
+                    if(detectedMarker.Id == 1)
                     {
                         // Get pose from OpenCV and format for Unity
                         Vector3 position = CvUtils.Vec3FromFloat3(detectedMarker.Position);
@@ -297,7 +302,7 @@ namespace ArUcoDetectionHoloLensUnity
                         markerGo.transform.localRotation = yRotation;
                         // Debug.Log("ID " + detectedMarker.Id.ToString() + " Position: " + CvUtils.GetVectorFromMatrix(transformUnityWorld).ToString() + " Rot: " + CvUtils.GetQuatFromMatrix(transformUnityWorld).ToString());
 
-                        onMarkerDetected.Invoke();
+                        onMarkerDetected.Invoke(markerGo.transform);
                         MarkerDetected = true;
                     }
                     Debug.Log("ID " + detectedMarker.Id.ToString());

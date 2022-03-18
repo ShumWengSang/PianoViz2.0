@@ -8,7 +8,6 @@ using UnityEngine.Events;
 public class MarkerDetection : MonoBehaviour
 {
     public ArUcoMarkerDetection marker;
-    public MarkerProgressIndicator progressIndicator;
     public UnityEvent onStartup;
 
     private void Start()
@@ -23,9 +22,6 @@ public class MarkerDetection : MonoBehaviour
 
     public void StartDetection()
     {
-        progressIndicator.StartProgressIndicator();
-        
-        
         Sequence seq = DOTween.Sequence();
         seq.InsertCallback(0.2f, () => { marker.enabled = true; });
 
