@@ -33,7 +33,7 @@ public class ShearTransform : MonoBehaviour
         foreach (var childRenderer in transform.GetComponentsInChildren<Renderer>())
         {
             if(!childRenderer.sharedMaterial)
-                continue;
+                continue;   
             
             if (childRenderer.sharedMaterial.shader.name == "Mixed Reality Toolkit/Shear")
             {
@@ -42,7 +42,7 @@ public class ShearTransform : MonoBehaviour
 
             
             MeshFilter meshFilter = childRenderer.GetComponent<MeshFilter>();
-            if (meshFilter)
+            if (meshFilter && meshFilter.sharedMesh)
             {
                 Mesh mesh = meshFilter.sharedMesh;
                 Bounds meshBounds = mesh.bounds;

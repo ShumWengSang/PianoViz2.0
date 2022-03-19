@@ -10,28 +10,47 @@ using UnityEngine.Assertions;
 using UnityEngine.Events;
 using UnityEngine.Serialization;
 
+[System.Serializable]
+public class BannerObjectHolders
+{
+    public MeshRenderer BannerBackground;
+
+    public Transform LoadingCircle;
+
+    public SpriteRenderer Icon;
+
+    public TextMeshPro Text;
+
+    public ButtonConfigHelper Button;
+
+    public void SetActive(bool active)
+    {
+        LoadingCircle.parent.gameObject.SetActive(active);
+    }
+}
+
 public class GameSetupInstructionsGUI : MonoBehaviour
 {
     [SerializeField] private BleModel bleModel;
     [SerializeField] private Ease rotationEase = Ease.InOutCirc;
     [SerializeField] private float rotationDuration = 1f;
-    [SerializeField] private Transform loadingCircle;
-    [SerializeField] private ButtonConfigHelper confirmButton;
-    [SerializeField] private MeshRenderer bannerMesh;
-    [SerializeField] private TextMeshPro bannerText;
     [SerializeField] private GameObject arUcoMarkerGameObject;
     [SerializeField] private Transform arucoMarkerVisual;
-    [SerializeField] private SpriteRenderer iconVisual;
     [SerializeField] private AudioSource audioPlayer;
     [SerializeField] private Transform PlaySpace;
+    [SerializeField] private BannerObjectHolders MovingBannerObjects;
+    [SerializeField] private BannerObjectHolders StaticBannerObjects;
     private Transform PlaySpaceParent;
     private Transform bannerParent;
 
-    [Header("Play Space Items"), SerializeField] private Transform PositionAdjustment;
+
 
     [NonSerialized] public BleMidiBroadcaster.OnNoteDown AssignLowerCEvent;
 
-
+    [SerializeField, Header("Falling Down")]
+    private Ease fallingDownEase = Ease.InCubic;
+    [SerializeField] private Transform KeyboardAndItems;
+    
     [Header("Setup And Teardown")]
     public UnityEvent OnStartup;
     public UnityEvent OnFinished;
@@ -62,7 +81,9 @@ public class GameSetupInstructionsGUI : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        loadingCircle.DOBlendableLocalRotateBy(new Vector3(0f, 0f, 360f), rotationDuration, RotateMode.FastBeyond360)
+        MovingBannerObjects.LoadingCircle.DOBlendableLocalRotateBy(new Vector3(0f, 0f, 360f), rotationDuration, RotateMode.FastBeyond360)
+            .SetEase(rotationEase).SetLoops(-1);
+        StaticBannerObjects.LoadingCircle.DOBlendableLocalRotateBy(new Vector3(0f, 0f, 360f), rotationDuration, RotateMode.FastBeyond360)
             .SetEase(rotationEase).SetLoops(-1);
         StartCoroutine(Run());
     }
@@ -71,29 +92,30 @@ public class GameSetupInstructionsGUI : MonoBehaviour
     {
         Startup();
         yield return StartCoroutine(arucoMarkerSequence());
-        // yield return StartCoroutine(WaitForPositionAdjust());
-        // yield return StartCoroutine(WaitForBluetooth());
-        // yield return StartCoroutine(WaitForLowerC());
+        yield return StartCoroutine(WaitForPositionAdjust());
+        yield return StartCoroutine(WaitForBluetooth());
+        yield return StartCoroutine(WaitForLowerC());
         Finished();
     }
 
     private void Startup()
     {
         PlaySpaceParent = PlaySpace.parent;
-        bannerParent = bannerMesh.transform.parent;
+        bannerParent = MovingBannerObjects.BannerBackground.transform.parent;
+        MovingBannerObjects.SetActive(true);
+        StaticBannerObjects.SetActive(false);
+        
+        MovingBannerObjects.BannerBackground.gameObject.SetActive(true);
+        MovingBannerObjects.BannerBackground.material.SetFloat(Property, 0);
 
+        MovingBannerObjects.Text.gameObject.SetActive(true);
+        MovingBannerObjects.Text.alpha = 0.0f;
         
-        bannerMesh.gameObject.SetActive(true);
-        bannerMesh.material.SetFloat(Property, 0);
-
-        bannerText.gameObject.SetActive(true);
-        bannerText.alpha = 0.0f;
-        
-        loadingCircle.gameObject.SetActive(false);
+        MovingBannerObjects.LoadingCircle.gameObject.SetActive(false);
         
         
-        iconVisual.gameObject.SetActive(false);
-        iconVisual.DOFade(1.0f, 0.0f);
+        MovingBannerObjects.Icon.gameObject.SetActive(false);
+        MovingBannerObjects.Icon.DOFade(1.0f, 0.0f);
         
         arucoMarkerVisual.gameObject.SetActive(false);
 
@@ -115,19 +137,19 @@ public class GameSetupInstructionsGUI : MonoBehaviour
 
         audioPlayer.clip = NotificationSound;
         audioPlayer.Play();
-        // bannerMesh.gameObject.SetActive(true);
-        var quadFadeIn = DOTween.To(() => bannerMesh.material.GetFloat(Property),
-            x => bannerMesh.material.SetFloat(Property, x), 0.75f, 2.0f);
+        // MovingBannerObjects.BannerBackground.gameObject.SetActive(true);
+        var quadFadeIn = DOTween.To(() => MovingBannerObjects.BannerBackground.material.GetFloat(Property),
+            x => MovingBannerObjects.BannerBackground.material.SetFloat(Property, x), 0.75f, 2.0f);
         // Fade in the blue quad
         yield return quadFadeIn.WaitForCompletion();
         audioPlayer.Play();
 
-        var bannerFadeIn = DOTween.To(() => bannerText.alpha, x => bannerText.alpha = x, 1.0f, 2.0f);
+        var bannerFadeIn = DOTween.To(() => MovingBannerObjects.Text.alpha, x => MovingBannerObjects.Text.alpha = x, 1.0f, 2.0f);
         // Fade in text
         yield return bannerFadeIn.WaitForCompletion();
 
-        loadingCircle.gameObject.SetActive(true);
-        iconVisual.gameObject.SetActive(true);
+        MovingBannerObjects.LoadingCircle.gameObject.SetActive(true);
+        MovingBannerObjects.Icon.gameObject.SetActive(true);
 
         // Invoke event
         OnStartarUcoSequence.Invoke();
@@ -179,17 +201,17 @@ public class GameSetupInstructionsGUI : MonoBehaviour
 
 
         // Detected marker, fade out background, icons, and text
-        loadingCircle.GetComponent<SpriteRenderer>().DOFade(0.0f, 1.0f);
-        bannerText.DOFade(0.0f, 0.5f);
-        iconVisual.DOFade(0.0f, 0.5f);
+        MovingBannerObjects.LoadingCircle.GetComponent<SpriteRenderer>().DOFade(0.0f, 1.0f);
+        MovingBannerObjects.Text.DOFade(0.0f, 0.5f);
+        MovingBannerObjects.Icon.DOFade(0.0f, 0.5f);
         
         // Fade out + remove the banner
         bannerParent.GetComponent<FollowCameraScript>().enabled = false;
-        var bannerFadeOut = DOTween.To(() => bannerMesh.material.GetFloat(Property),
-            x => bannerMesh.material.SetFloat(Property, x), 0.0f, 0.6f);
+        var bannerFadeOut = DOTween.To(() => MovingBannerObjects.BannerBackground.material.GetFloat(Property),
+            x => MovingBannerObjects.BannerBackground.material.SetFloat(Property, x), 0.0f, 0.6f);
         yield return bannerFadeOut.WaitForCompletion();
         yield return new WaitWhile(() => audioPlayer.isPlaying);
-        bannerMesh.gameObject.SetActive(false);
+        MovingBannerObjects.BannerBackground.gameObject.SetActive(false);
 
         // wait for 3 seconds to show marker detection
         yield return new WaitForSeconds(3.0f);
@@ -205,11 +227,60 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         yield return new WaitWhile(() => audioPlayer.isPlaying);
         
         bannerParent.GetComponent<FollowCameraScript>().enabled = false;
-        PositionAdjustment.gameObject.SetActive(true);
+        KeyboardAndItems.gameObject.SetActive(true);
     }
 
     public IEnumerator WaitForPositionAdjust()
     {
+        // Start up, turn off blue banner + objects
+        MovingBannerObjects.SetActive(false);
+        StaticBannerObjects.SetActive(false);
+        StaticBannerObjects.BannerBackground.material.SetFloat(Property, 0);
+        StaticBannerObjects.LoadingCircle.gameObject.SetActive(false);
+        StaticBannerObjects.Icon.gameObject.SetActive(false);
+        StaticBannerObjects.Button.gameObject.SetActive(false);
+        StaticBannerObjects.Text.alpha = 0;
+        arucoMarkerVisual.gameObject.SetActive(true);
+        
+        // Make the PlaySpace Fall in
+        KeyboardAndItems.gameObject.SetActive(true);
+        StaticBannerObjects.SetActive(false);
+        
+        Vector3 targetPosition = PlaySpace.position;
+        
+        // Offset the current position, then make it fall
+        KeyboardAndItems.position = new Vector3(targetPosition.x, targetPosition.y + 1000, targetPosition.z);
+        var FallDownTween = KeyboardAndItems.DOMoveY(targetPosition.y, 5.0f).SetEase(fallingDownEase);
+        yield return FallDownTween.WaitForCompletion();
+        yield return new WaitForSeconds(1.0f);
+        // Play Noise
+        audioPlayer.clip = NotificationSound;
+        audioPlayer.Play();
+        
+        // Fade in static blue banner
+        StaticBannerObjects.SetActive(true);
+        StaticBannerObjects.BannerBackground.gameObject.SetActive(true);
+        var bannerFadeIn = DOTween.To(() => StaticBannerObjects.BannerBackground.material.GetFloat(Property),
+            x => StaticBannerObjects.BannerBackground.material.SetFloat(Property, x), 0.750f, 2.0f);
+        yield return bannerFadeIn.WaitForCompletion();
+        
+        audioPlayer.clip = NotificationSound;
+        audioPlayer.Play();
+        
+        // Fade in text saying to confirm placement
+        StaticBannerObjects.Text.text = "Adjust Placement with sliders.";
+        var textFadeIn = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 1.0f, 2.0f);
+        yield return textFadeIn.WaitForCompletion();
+        
+        audioPlayer.clip = NotificationSound;
+        audioPlayer.Play();
+        
+        // Turn on texture
+        
+        // Turn on button
+        StaticBannerObjects.Button.gameObject.SetActive(true);
+
+        // Now we wait for player to press confirm 
         OnWaitForPositionAdjust.Invoke();
         bool confirmed = false;
 
@@ -218,28 +289,84 @@ public class GameSetupInstructionsGUI : MonoBehaviour
             confirmed = true;
         }
 
-        confirmButton.OnClick.AddListener(OnConfirmed);
+        StaticBannerObjects.Button.OnClick.AddListener(OnConfirmed);
         
         while(!confirmed)
             yield return null;
         
-        confirmButton.OnClick.RemoveListener(OnConfirmed);
+        StaticBannerObjects.Button.OnClick.RemoveListener(OnConfirmed);
+        StaticBannerObjects.Button.gameObject.SetActive(false);
+        audioPlayer.clip = WelcomeSound;
+        audioPlayer.Play();
         AfterWaitForPositionAdjust.Invoke();
+        var textFadeOu = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 0.0f, 1.0f);
+        yield return textFadeOu.WaitForCompletion();
+        yield return new WaitWhile(() => audioPlayer.isPlaying);
+        
+        Debug.Log("Finished Adjusting Position");
     }
 
     public IEnumerator WaitForBluetooth()
     {
+        MovingBannerObjects.SetActive(false);
+        StaticBannerObjects.SetActive(true);
+        StaticBannerObjects.Button.gameObject.SetActive(false);
+        StaticBannerObjects.Text.alpha = 0;
+        
+        // Fade in text
+        StaticBannerObjects.Text.text = "Waiting for Bluetooth signal...";
+        var textFadeIn = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 1.0f, 2.0f);
+        yield return textFadeIn.WaitForCompletion();
+        
+        audioPlayer.clip = NotificationSound;
+        audioPlayer.Play();
+        
+        // Turn on circle + icon
+        StaticBannerObjects.LoadingCircle.gameObject.SetActive(true);
+        StaticBannerObjects.Icon.gameObject.SetActive(true);
+        
+        var sequence = DOTween.Sequence().AppendCallback(() =>
+        {
+            audioPlayer.clip = WaitSound;
+            audioPlayer.Play();
+        }).AppendInterval(2.68f).SetLoops(-1);
+        
+        // Wait 5 seconds
+        yield return new WaitForSeconds(3.0f);
+        
+        // Turn on BLE Object to detect bluetooth
+        bleModel.gameObject.SetActive(true);
+        
         if (!bleModel.IsConnected() && !bleModel.IsScanning())
             bleModel.StartScanHandler();
+        
+
         
         OnWaitForBluetooth.Invoke();
         while(!bleModel.IsConnected())
             yield return null;
+        sequence.Kill();
+        
+        audioPlayer.clip = WelcomeSound;
+        audioPlayer.Play();
+        var greencircle = StaticBannerObjects.LoadingCircle.GetComponent<SpriteRenderer>().DOColor(Color.green, 1.0f);
+        yield return greencircle.WaitForCompletion();
+        
+        StaticBannerObjects.LoadingCircle.gameObject.SetActive(false);
+        StaticBannerObjects.Icon.gameObject.SetActive(false);
+        
         AfterWaitForBluetooth.Invoke();
     }
     
     public IEnumerator WaitForLowerC()
     {
+        StaticBannerObjects.Text.alpha = 0;
+        
+        // Fade in text
+        StaticBannerObjects.Text.text = "Press Lower C to continue ... ";
+        var textFadeIn = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 1.0f, 2.0f);
+        yield return textFadeIn.WaitForCompletion();
+        
         OnWaitForLowerC.Invoke();
         bool CPressed = false;
 
@@ -259,6 +386,14 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         
         BleMidiBroadcaster.onNoteDown -= OnKeyboardPressed;
         AfterWaitForLowerC.Invoke();
+        
+        var bannerFadeOut = DOTween.To(() => StaticBannerObjects.BannerBackground.material.GetFloat(Property),
+            x => StaticBannerObjects.BannerBackground.material.SetFloat(Property, x), 0.0f, 0.6f);
+        var textFadeOut = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 0.0f, 0.6f);
+        yield return textFadeIn.WaitForCompletion();
+        yield return bannerFadeOut.WaitForCompletion();
+        
+        StaticBannerObjects.SetActive(false);
     }
     
     

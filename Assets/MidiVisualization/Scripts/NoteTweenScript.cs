@@ -11,6 +11,7 @@ using UnityEngine.Assertions;
 
 public class NoteTweenScript : MonoBehaviour
 {
+    public keyboardKeyHighlights keyboardKeyHighlights;
     private float backY; // y of the object's transform that's furthest from destination
     private float frontY; // y of the object's transform that's closest to destination
 
@@ -55,6 +56,7 @@ public class NoteTweenScript : MonoBehaviour
                 DOTween.Sequence()
                     .Append(DOTween.To(() => frontY, x => frontY = x, endY,
                         duration).SetEase(ease))
+                    .AppendCallback(() => keyboardKeyHighlights.SetModeFlash(true))
             )
             .Insert(0,
 
