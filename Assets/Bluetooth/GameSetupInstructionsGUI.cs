@@ -118,6 +118,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         MovingBannerObjects.Icon.DOFade(1.0f, 0.0f);
         
         arucoMarkerVisual.gameObject.SetActive(false);
+        KeyboardAndItems.gameObject.SetActive(false);
 
         OnStartup.Invoke();
     }
@@ -215,10 +216,8 @@ public class GameSetupInstructionsGUI : MonoBehaviour
 
         // wait for 3 seconds to show marker detection
         yield return new WaitForSeconds(3.0f);
-        // Fade out the marker
+        
 
-        var fadeOutMarker = arucoMarkerVisual.GetComponent<MeshRenderer>().material.DOFade(0.0f, 0.5f);
-        yield return fadeOutMarker.WaitForCompletion();
 
         // Play another sound
         audioPlayer.clip = NotificationSound;
@@ -227,7 +226,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         yield return new WaitWhile(() => audioPlayer.isPlaying);
         
         bannerParent.GetComponent<FollowCameraScript>().enabled = false;
-        KeyboardAndItems.gameObject.SetActive(true);
+
     }
 
     public IEnumerator WaitForPositionAdjust()
@@ -253,6 +252,11 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         var FallDownTween = KeyboardAndItems.DOMoveY(targetPosition.y, 5.0f).SetEase(fallingDownEase);
         yield return FallDownTween.WaitForCompletion();
         yield return new WaitForSeconds(1.0f);
+        
+        // Fade out the marker
+        var fadeOutMarker = arucoMarkerVisual.GetComponent<MeshRenderer>().material.DOFade(0.0f, 0.5f);
+        yield return fadeOutMarker.WaitForCompletion();
+        
         // Play Noise
         audioPlayer.clip = NotificationSound;
         audioPlayer.Play();
