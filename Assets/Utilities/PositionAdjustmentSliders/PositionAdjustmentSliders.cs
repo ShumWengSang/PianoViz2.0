@@ -1,6 +1,7 @@
 ﻿
 #define POSITIONING_LOGGING
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.UI;
@@ -45,7 +46,7 @@ public class PositionAdjustmentSliders : MonoBehaviour
         Vector3 newRotation = transformToSet.localRotation.eulerAngles;
         newRotation.y = 360f * (rotationSlider.SliderValue - 0.5f);
 #if POSITIONING_LOGGING
-        if (newRotation.y != transformToSet.localRotation.eulerAngles.y)
+        if (Math.Abs(newRotation.y - transformToSet.localRotation.eulerAngles.y) > 0.0001f)
             Debug.Log("rotated object to: " + newRotation.y);
 #endif
         transformToSet.localRotation = Quaternion.Euler(newRotation);

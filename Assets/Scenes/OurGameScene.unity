@@ -3107,6 +3107,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8406134339543305353, guid: 5cebc128305d7bb4cbbfff8466bd08a6,
+        type: 3}
+      propertyPath: m_FontData.m_FontSize
+      value: 68
+      objectReference: {fileID: 0}
     - target: {fileID: 8406134339665259241, guid: 5cebc128305d7bb4cbbfff8466bd08a6,
         type: 3}
       propertyPath: m_Name
@@ -6331,40 +6336,18 @@ MonoBehaviour:
   OnStartup:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 7101450055988390425}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 309874186}
         m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
@@ -6486,10 +6469,32 @@ MonoBehaviour:
       m_Calls: []
   OnWaitForLowerC:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5227580667872280874}
+        m_MethodName: SetModeIrridescentPulse
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   AfterWaitForLowerC:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5227580667872280874}
+        m_MethodName: SetModeRainbowInOut
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   NotificationSound: {fileID: 8300000, guid: 82bb32b8900f55c488f190d835ffcd99, type: 3}
   WelcomeSound: {fileID: 8300000, guid: 2193e9060a088b24f97f48d1e1a4a862, type: 3}
   WaitSound: {fileID: 8300000, guid: 4075162bd7e8d9b4387ba77aeb751a0d, type: 3}
@@ -17455,8 +17460,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7381814194522089913}
-  m_LocalRotation: {x: 0, y: 0.012562133, z: 0, w: 0.9999211}
-  m_LocalPosition: {x: -0.7259567, y: 0.9144583, z: -0.6144629}
+  m_LocalRotation: {x: 0, y: 0.0021058517, z: 0, w: 0.9999978}
+  m_LocalPosition: {x: -0.6336777, y: 0.6729441, z: -0.3251483}
   m_LocalScale: {x: 0.23441869, y: 0.0703256, z: 0.23441866}
   m_Children:
   - {fileID: 520635764490080101}
@@ -17468,7 +17473,7 @@ Transform:
   - {fileID: 1934382489}
   m_Father: {fileID: 309874187}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 1.439552, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0.241313, z: 0}
 --- !u!33 &2983941630106875462
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -19121,7 +19126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f7605271650c244ab4ff54ba445913b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mode: 1
+  mode: 0
   materials: {fileID: 11400000, guid: f2d1036099154654ab3cf743e2a6e269, type: 2}
 --- !u!4 &5235198541900893180
 Transform:
@@ -23324,7 +23329,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8067167225152857222}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.323, z: 1.86}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
   - {fileID: 1638395559}
