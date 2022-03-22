@@ -3105,7 +3105,7 @@ PrefabInstance:
     - target: {fileID: 8406134338955736993, guid: 5cebc128305d7bb4cbbfff8466bd08a6,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8406134339665259241, guid: 5cebc128305d7bb4cbbfff8466bd08a6,
         type: 3}
@@ -17455,8 +17455,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7381814194522089913}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.050000004, z: 0}
+  m_LocalRotation: {x: 0, y: 0.012562133, z: 0, w: 0.9999211}
+  m_LocalPosition: {x: -0.7259567, y: 0.9144583, z: -0.6144629}
   m_LocalScale: {x: 0.23441869, y: 0.0703256, z: 0.23441866}
   m_Children:
   - {fileID: 520635764490080101}
@@ -17468,7 +17468,7 @@ Transform:
   - {fileID: 1934382489}
   m_Father: {fileID: 309874187}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 1.439552, z: 0}
 --- !u!33 &2983941630106875462
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -21093,7 +21093,7 @@ GameObject:
   - component: {fileID: 4008511877025007313}
   - component: {fileID: 8067167223580734447}
   m_Layer: 0
-  m_Name: NoteSpawner
+  m_Name: NoteSpawner [DON'T CHANGE TRANS]
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,11 +1,12 @@
 ﻿
-//#define POSITIONING_LOGGING
+#define POSITIONING_LOGGING
 
 using System.Collections;
 using System.Collections.Generic;
 using Microsoft.MixedReality.Toolkit.UI;
 using UnityEngine;
 using UnityEngine.Serialization;
+
 
 public class PositionAdjustmentSliders : MonoBehaviour
 {
@@ -44,8 +45,8 @@ public class PositionAdjustmentSliders : MonoBehaviour
         Vector3 newRotation = transformToSet.localRotation.eulerAngles;
         newRotation.y = 360f * (rotationSlider.SliderValue - 0.5f);
 #if POSITIONING_LOGGING
-        if (newRotation.y != transformToSet.eulerAngles.y)
-            Debug.Log("rotated object to: newRotation.y");
+        if (newRotation.y != transformToSet.localRotation.eulerAngles.y)
+            Debug.Log("rotated object to: " + newRotation.y);
 #endif
         transformToSet.localRotation = Quaternion.Euler(newRotation);
     }
