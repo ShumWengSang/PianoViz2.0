@@ -14,10 +14,10 @@ public class MidiNoteSpawnerScript : MonoBehaviour
     [SerializeField] private MidiStreamPlayer midiStreamPlayer;
 
     // transform who's children is the starting pos of all the keys
-    [SerializeField] private Transform startTransform;
+    [FormerlySerializedAs("startTransform")] [SerializeField] private Transform noteStarts;
 
     // transform who's children is the ending pos of all the keys
-    [SerializeField] private Transform endTransform;
+    [FormerlySerializedAs("endTransform")] [SerializeField] private Transform notePaths;
 
     [SerializeField] private Transform keyboard;
 
@@ -43,8 +43,8 @@ public class MidiNoteSpawnerScript : MonoBehaviour
     {
         DOTween.SetTweensCapacity(256, 1024);
         
-        PopulateKeyArray(startTransform, ref startKeys);
-        PopulateKeyArray(endTransform, ref endKeys);
+        PopulateKeyArray(noteStarts, ref startKeys);
+        PopulateKeyArray(notePaths, ref endKeys);
 
         Assert.IsTrue(MidiPlayerGlobal.ImSFCurrent != null);
         Assert.IsTrue(MidiPlayerGlobal.MPTK_SoundFontLoaded);
