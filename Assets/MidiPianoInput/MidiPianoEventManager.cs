@@ -39,6 +39,7 @@ namespace MidiPianoInput
         private float maxTimeDelta = .5f;
 
         [SerializeField] private Material successMaterial;
+        [SerializeField] private Material failMaterial;
 
         private bool _gameActive = false;
         public bool gameActive
@@ -110,23 +111,26 @@ namespace MidiPianoInput
                 return;
             
             // look for notes that the user completely failed to press in time
-            foreach (Queue<NoteEventInfo> noteEvents in anticipatedNoteEvents)
+            foreach (Queue<NoteEventInfo> anticipated in anticipatedNoteEvents)
             {
-                while (noteEvents.Any() && Time.time - maxTimeDelta > noteEvents.Peek().fireTime)
+                while (anticipated.Any() && Time.time - maxTimeDelta > anticipated.Peek().fireTime)
                 {
+                    
+                    NoteEventInfo nextNote = anticipated.Peek();
                     // being late for releasing a note will be handled in OnKeyboardNoteRelease instead
-                    if (!noteEvents.Peek().anticipatePress)
+                    if (!nextNote.anticipatePress)
                         break;
                     
-                    MPTKEvent mptkEvent = noteEvents.Peek().mptkEvent;
+                    MPTKEvent mptkEvent = nextNote.mptkEvent;
                     MidiNote note = (MidiNote) mptkEvent.Value;
 #if PIANO_EVENT_LOGGING
                     Debug.Log("player failed to press the note '" + note + "' in time");
 #endif
                     
-                    // delete the note to show that the user failed to play it in time
-                    Destroy(noteEvents.Peek().noteVisualization);
-                    noteEvents.Dequeue();
+                    // gery out the note to show that the user failed to play it in time
+                    if(nextNote.noteVisualization)
+                        nextNote.noteVisualization.GetComponent<Renderer>().material = failMaterial;
+                    anticipated.Dequeue();
                 }
             }
         }
@@ -161,7 +165,8 @@ namespace MidiPianoInput
 #if PIANO_EVENT_LOGGING
                     Debug.Log("<color=green>player successfully pressed '" + note + "' with error: " + error + "</color>");
 #endif
-                    nextNote.noteVisualization.GetComponent<Renderer>().material = successMaterial;
+                    if(nextNote.noteVisualization)
+                        nextNote.noteVisualization.GetComponent<Renderer>().material = successMaterial;
                     midiStreamPlayer.MPTK_PlayEvent(nextNote.mptkEvent);
 
                     // wait for a release now at the correct time
@@ -175,10 +180,14 @@ namespace MidiPianoInput
                     Debug.Log("player pressed '" + note + "' too early");
 #endif
                     OnMistake(note, velocity);
-                    
-                    // delete the note to show that the user played it too early
-                    Destroy(nextNote.noteVisualization);
-                    anticipated.Dequeue();
+
+                    if (Math.Abs(nextNoteTime() - nextNote.fireTime) < maxTimeDelta)
+                    {
+                        // delete the note to show that the user played it too early
+                        if(nextNote.noteVisualization)
+                            nextNote.noteVisualization.GetComponent<Renderer>().material = failMaterial;
+                        anticipated.Dequeue();
+                    }
                 }
             }
             // if we anticipated a release, the user will already be penalized in OnKeyboardNoteRelease
@@ -223,9 +232,22 @@ namespace MidiPianoInput
                 midiStreamPlayer.MPTK_StopEvent(nextNote.mptkEvent);
 
                 // delete the note to show that the user has played (or a attempted to play) it
-                Destroy(nextNote.noteVisualization);
+                if(nextNote.noteVisualization)
+                    nextNote.noteVisualization.GetComponent<Renderer>().material = failMaterial;
                 anticipated.Dequeue();
             }
+        }
+
+        private float nextNoteTime()
+        {
+            float minTime = float.PositiveInfinity;
+            foreach (Queue<NoteEventInfo> NoteEvents in anticipatedNoteEvents)
+            {
+                if(NoteEvents.Any())
+                    minTime = Mathf.Min(NoteEvents.Peek().fireTime, minTime);
+            }
+
+            return minTime;
         }
     }
 }
