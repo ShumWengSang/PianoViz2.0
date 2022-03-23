@@ -5,6 +5,7 @@ using MidiPianoInput;
 using MidiPlayerTK;
 using UnityEngine;
 using UnityEngine.Assertions;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 
 public class MidiNoteSpawnerScript : MonoBehaviour
@@ -22,6 +23,9 @@ public class MidiNoteSpawnerScript : MonoBehaviour
 
     // transform who's children is all the active notes in que to be played
     [SerializeField] private Transform activeNotes;
+    [SerializeField] private Transform activeBars;
+    [SerializeField] private GameObject barPrefabStart;
+    [SerializeField] private GameObject barPrefabEnd;
 
     [FormerlySerializedAs("eventManager")] [SerializeField] private MidiPianoEventManager midiPianoEventManager;
 
@@ -48,9 +52,28 @@ public class MidiNoteSpawnerScript : MonoBehaviour
 
         midiFilePlayer.enabled = true;
         midiFilePlayer.OnEventNotesMidi.AddListener(HandleMidiEvents);
+        midiFilePlayer.OnEventStartPlayMidi.AddListener(OnMusicStart);
 
     }
 
+    private void OnMusicStart(string midiname )
+    {
+        Debug.LogFormat($"Start playing midi {midiname}");
+        Debug.LogFormat($"Midi tempo of {midiFilePlayer.MPTK_Tempo.ToString()}");
+        Sequence tempoVisual = DOTween.Sequence();
+        tempoVisual.AppendCallback(() =>
+        {
+            // Spawn horizontal bars
+            GameObject instance = Instantiate(barPrefabStart, activeBars, true);
+            instance.SetActive(true);
+            instance.transform.DOMoveY(barPrefabEnd.transform.position.y, tweenTime)
+                .SetEase(tweenEase).OnComplete(() =>
+            {
+                Destroy(instance);
+            });
+        }).AppendInterval((float)midiFilePlayer.MPTK_Tempo / 60.0f / 4.0f).SetLoops(-1);
+    }
+    
     private void PopulateKeyArray(Transform parent, ref Transform[] keys)
     {
         keys = new Transform[parent.childCount];
