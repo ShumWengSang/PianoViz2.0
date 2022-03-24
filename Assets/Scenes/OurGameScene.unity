@@ -6703,6 +6703,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 7297651529988132962}
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnFinished:
     m_PersistentCalls:
       m_Calls:
@@ -6741,6 +6752,17 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 8067167223580734447}
         m_MethodName: set_gameActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 7297651529988132962}
+        m_MethodName: SetActive
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6830,6 +6852,34 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 5227580667872280874}
+        m_MethodName: SetModeRainbowInOut
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnWaitForUpperC:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 476939775132013284}
+        m_MethodName: SetModeIrridescentPulse
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  AfterWaitForUpperC:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 476939775132013284}
         m_MethodName: SetModeRainbowInOut
         m_Mode: 6
         m_Arguments:
@@ -12883,7 +12933,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7493632865472467664}
-  m_Mesh: {fileID: 0}
+  m_Mesh: {fileID: -4042283570683811282, guid: f68631928a206c242adaa02db2572139, type: 3}
 --- !u!4 &762149164414022706
 Transform:
   m_ObjectHideFlags: 0
