@@ -3213,6 +3213,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: ScreenSpaceCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 8406134339665259241, guid: 5cebc128305d7bb4cbbfff8466bd08a6,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8406134339665259246, guid: 5cebc128305d7bb4cbbfff8466bd08a6,
         type: 3}
       propertyPath: m_Pivot.x
@@ -4985,6 +4990,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1007393251}
+  - component: {fileID: 1007393253}
+  - component: {fileID: 1007393252}
   m_Layer: 0
   m_Name: BarNotes
   m_TagString: Untagged
@@ -5006,6 +5013,117 @@ Transform:
   m_Father: {fileID: 2979807062961484899}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1007393252
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007393250}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5478fca847ea2fa4585c513abc0edfa9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 1007393253}
+  snap: {fileID: 8300000, guid: 9de93e0e2911a5a4485f49fc755cc3e5, type: 3}
+  clap: {fileID: 8300000, guid: 15c4e6bbe828c2540a1ed6c1a7d3ac7a, type: 3}
+--- !u!82 &1007393253
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1007393250}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1012681268
 GameObject:
   m_ObjectHideFlags: 0
@@ -6624,6 +6742,8 @@ MonoBehaviour:
   NotificationSound: {fileID: 8300000, guid: 82bb32b8900f55c488f190d835ffcd99, type: 3}
   WelcomeSound: {fileID: 8300000, guid: 2193e9060a088b24f97f48d1e1a4a862, type: 3}
   WaitSound: {fileID: 8300000, guid: 4075162bd7e8d9b4387ba77aeb751a0d, type: 3}
+  FallSound: {fileID: 8300000, guid: bb2a5ccbf7a5ee04c970c733a99a6d70, type: 3}
+  ThudSound: {fileID: 8300000, guid: bcb0194b93fcf944c8fd2122f50e1d51, type: 3}
 --- !u!82 &1247614029
 AudioSource:
   m_ObjectHideFlags: 0
@@ -11726,8 +11846,8 @@ MonoBehaviour:
   spatialize: 0
   AudioBufferLenght: 0
   AudioNumBuffers: 0
-  midiNameToPlay: Tetris Theme
-  midiIndexToPlay: 83
+  midiNameToPlay: MaryHadALittleLamp
+  midiIndexToPlay: 53
   MPTK_StartPlayAtFirstNote: 0
   speed: 0.25
   durationEditorModeOnly: 
@@ -17570,8 +17690,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   midiFilePlayer: {fileID: 85560492032128619}
   midiStreamPlayer: {fileID: 1604925154785864207}
-  startTransform: {fileID: 520635764490080101}
-  endTransform: {fileID: 5471926937964204300}
+  noteStarts: {fileID: 520635764490080101}
+  notePaths: {fileID: 5471926937964204300}
   keyboard: {fileID: 7046578069959898083}
   activeNotes: {fileID: 5316321351310682208}
   activeBars: {fileID: 1007393251}
@@ -17580,8 +17700,10 @@ MonoBehaviour:
   midiPianoEventManager: {fileID: 8067167223580734447}
   startingNote: 60
   midiChanel: 0
-  tweenEase: 2
+  tweenEase: 20
   tweenTime: 2
+  beatGenerator: {fileID: 1007393252}
+  numerator: 3
 --- !u!4 &2979807062961484899
 Transform:
   m_ObjectHideFlags: 0
@@ -22483,6 +22605,7 @@ MonoBehaviour:
   midiStreamPlayer: {fileID: 1604925154785864207}
   maxTimeDelta: 0.5
   successMaterial: {fileID: 2100000, guid: 3040a22261d40d54b931d94f58cf5822, type: 2}
+  failMaterial: {fileID: 0}
   gameSetup: {fileID: 1247614028}
 --- !u!4 &8067167223590046196
 Transform:

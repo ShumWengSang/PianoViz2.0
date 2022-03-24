@@ -75,6 +75,10 @@ public class GameSetupInstructionsGUI : MonoBehaviour
     [SerializeField] private AudioClip NotificationSound;
     [SerializeField] private AudioClip WelcomeSound;
     [SerializeField] private AudioClip WaitSound;
+    [SerializeField] private AudioClip FallSound;
+    [SerializeField] private AudioClip ThudSound;
+    [SerializeField] private AudioClip BeepingSound;
+    [SerializeField] private AudioSource FallingAudioSource;
     
     private static readonly int Property = Shader.PropertyToID("_IridescenceIntensity");
 
@@ -212,19 +216,17 @@ public class GameSetupInstructionsGUI : MonoBehaviour
             x => MovingBannerObjects.BannerBackground.material.SetFloat(Property, x), 0.0f, 0.6f);
         yield return bannerFadeOut.WaitForCompletion();
         yield return new WaitWhile(() => audioPlayer.isPlaying);
+        yield return new WaitForSeconds(0.2f);
+        
         MovingBannerObjects.BannerBackground.gameObject.SetActive(false);
 
         // wait for 3 seconds to show marker detection
-        yield return new WaitForSeconds(3.0f);
-        
-
-
-        // Play another sound
-        audioPlayer.clip = NotificationSound;
+        audioPlayer.clip = BeepingSound;
         audioPlayer.Play();
-        // Return when sound finishes playing
         yield return new WaitWhile(() => audioPlayer.isPlaying);
-        
+
+        yield return new WaitForSeconds(0.2f);
+
         bannerParent.GetComponent<FollowCameraScript>().enabled = false;
 
     }
@@ -249,9 +251,15 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         
         // Offset the current position, then make it fall
         KeyboardAndItems.position = new Vector3(targetPosition.x, targetPosition.y + 1000, targetPosition.z);
-        var FallDownTween = KeyboardAndItems.DOMoveY(targetPosition.y, 5.0f).SetEase(fallingDownEase);
+        var FallDownTween = KeyboardAndItems.DOMoveY(targetPosition.y, FallSound.length).SetEase(fallingDownEase);
+        FallingAudioSource.clip = FallSound;
+        FallingAudioSource.Play();
         yield return FallDownTween.WaitForCompletion();
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitWhile(() => FallingAudioSource.isPlaying);
+
+        audioPlayer.clip = ThudSound;
+        audioPlayer.Play();
+        yield return new WaitWhile(() => audioPlayer.isPlaying);
         
         // Fade out the marker
         var fadeOutMarker = arucoMarkerVisual.GetComponent<MeshRenderer>().material.DOFade(0.0f, 0.5f);

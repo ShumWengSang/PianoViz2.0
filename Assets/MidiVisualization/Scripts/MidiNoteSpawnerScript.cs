@@ -35,6 +35,8 @@ public class MidiNoteSpawnerScript : MonoBehaviour
     [SerializeField] private Ease tweenEase = Ease.Linear;
     [SerializeField] private float tweenTime = 5;
 
+    [SerializeField] private BeatGenerator beatGenerator;
+    
     private Transform[] startKeys;
     private Transform[] endKeys;
 
@@ -49,18 +51,28 @@ public class MidiNoteSpawnerScript : MonoBehaviour
         Assert.IsTrue(MidiPlayerGlobal.ImSFCurrent != null);
         Assert.IsTrue(MidiPlayerGlobal.MPTK_SoundFontLoaded);
         Assert.IsTrue((midiFilePlayer != null));
-
+        
+         
         midiFilePlayer.enabled = true;
         midiFilePlayer.OnEventNotesMidi.AddListener(HandleMidiEvents);
         midiFilePlayer.OnEventStartPlayMidi.AddListener(OnMusicStart);
-
+        midiFilePlayer.OnEventEndPlayMidi.AddListener(OnMusicEnd);
     }
+
+    private Sequence tempoVisual;
+    private void OnMusicEnd(string arg0, EventEndMidiEnum arg1)
+    {
+        tempoVisual.Kill();
+    }
+
+    public int numerator = 3;
 
     private void OnMusicStart(string midiname )
     {
         Debug.LogFormat($"Start playing midi {midiname}");
         Debug.LogFormat($"Midi tempo of {midiFilePlayer.MPTK_Tempo.ToString()}");
-        Sequence tempoVisual = DOTween.Sequence();
+        Debug.LogFormat($"Midi numerator of {midiFilePlayer.midiLoaded.MPTK_TimeSigNumerator.ToString()}");
+        tempoVisual = DOTween.Sequence();
         tempoVisual.AppendCallback(() =>
         {
             // Spawn horizontal bars
@@ -69,9 +81,10 @@ public class MidiNoteSpawnerScript : MonoBehaviour
             instance.transform.DOMoveY(barPrefabEnd.transform.position.y, tweenTime)
                 .SetEase(tweenEase).OnComplete(() =>
             {
+                beatGenerator?.PlaySound(0);
                 Destroy(instance);
             });
-        }).AppendInterval((float)midiFilePlayer.MPTK_Tempo / 60.0f / 4.0f).SetLoops(-1);
+        }).AppendInterval((float)midiFilePlayer.MPTK_Tempo / 60.0f /  numerator).SetLoops(-1);
     }
     
     private void PopulateKeyArray(Transform parent, ref Transform[] keys)
