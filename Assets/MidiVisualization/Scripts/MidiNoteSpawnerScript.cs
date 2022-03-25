@@ -37,6 +37,7 @@ public class MidiNoteSpawnerScript : MonoBehaviour
 
     [SerializeField] private BeatGenerator beatGenerator;
     
+    
     private Transform[] startKeys;
     private Transform[] endKeys;
 

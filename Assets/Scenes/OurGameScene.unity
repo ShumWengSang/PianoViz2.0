@@ -6676,7 +6676,7 @@ MonoBehaviour:
     Icon: {fileID: 1064742920}
     Text: {fileID: 375689879}
     Button: {fileID: 2110941150}
-  fallingDownEase: 9
+  fallingDownEase: 17
   KeyboardAndItems: {fileID: 309874187}
   OnStartup:
     m_PersistentCalls:

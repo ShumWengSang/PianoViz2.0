@@ -118,8 +118,17 @@ namespace ArUcoDetectionHoloLensUnity
             
 #if !ENABLE_WINMD_SUPPORT
             // if marker detection isn't supported, just pretend we found it
-            onMarkerDetected.Invoke(null);
+            StartCoroutine(FakeFoundMarker(100));
 #endif
+        }
+
+        IEnumerator FakeFoundMarker(int count)
+        {
+            for (int i = 0; i < count; ++i)
+            {
+                onMarkerDetected.Invoke(null);
+                yield return null;
+            }
         }
 
         async void OnDisable()

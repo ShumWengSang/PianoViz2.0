@@ -43,6 +43,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
     private Transform PlaySpaceParent;
     private Transform bannerParent;
 
+    [SerializeField] private MarkerDetection markerDetection;
 
 
     [NonSerialized] public BleMidiBroadcaster.OnNoteDown AssignLowerCEvent;
@@ -97,11 +98,11 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         Startup();
         yield return StartCoroutine(arucoMarkerSequence());
         yield return StartCoroutine(WaitForPositionAdjust());
-        yield return StartCoroutine(WaitForBluetooth());
-        yield return StartCoroutine(WaitForLowerC());
+        //yield return StartCoroutine(WaitForBluetooth());
+        //yield return StartCoroutine(WaitForLowerC());
         Finished();
     }
-
+    
     private void Startup()
     {
         PlaySpaceParent = PlaySpace.parent;
@@ -133,6 +134,19 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         OnFinished.Invoke();
     }
 
+    public IEnumerator FadeInFadeOutText(string newText, TextMeshPro tmp, bool fadeOut = true)
+    {
+        MovingBannerObjects.Text.text = newText;
+        var bannerFadeIn = DOTween.To(() => tmp.alpha, x => tmp.alpha = x, 1.0f, 2.0f);
+        // Fade in text
+        yield return bannerFadeIn.WaitForCompletion();
+        if (fadeOut)
+        {
+            var bannerFadeOut = DOTween.To(() => tmp.alpha, x => tmp.alpha = x, 0.0f, 0.6f);
+            yield return bannerFadeOut.WaitForCompletion();
+        }
+    }
+
     public IEnumerator arucoMarkerSequence()
     {
         bannerParent.GetComponent<FollowCameraScript>().enabled = true;
@@ -148,11 +162,9 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         // Fade in the blue quad
         yield return quadFadeIn.WaitForCompletion();
         audioPlayer.Play();
-
-        var bannerFadeIn = DOTween.To(() => MovingBannerObjects.Text.alpha, x => MovingBannerObjects.Text.alpha = x, 1.0f, 2.0f);
-        // Fade in text
-        yield return bannerFadeIn.WaitForCompletion();
-
+        
+        yield return StartCoroutine(FadeInFadeOutText("Starting up keyboard tracking", MovingBannerObjects.Text));
+        yield return StartCoroutine(FadeInFadeOutText("Please find the marker near the keyboard", MovingBannerObjects.Text, false));
         MovingBannerObjects.LoadingCircle.gameObject.SetActive(true);
         MovingBannerObjects.Icon.gameObject.SetActive(true);
 
@@ -176,7 +188,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         // Wait until detection
         {
             bool detected = false;
-
+            int detectedCount = 0;
             void OnConfirmed(Transform trans)
             {
                 if (trans)
@@ -185,12 +197,33 @@ public class GameSetupInstructionsGUI : MonoBehaviour
                     PlaySpace.rotation = trans.rotation;
                 }
                 detected = true;
+#if UNITY_EDITOR
+                detectedCount = 100;
+#endif
             }
 
             arUcoMarkerGameObject.GetComponent<ArUcoDetectionHoloLensUnity.ArUcoMarkerDetection>().onMarkerDetected.AddListener(OnConfirmed);
 
-            while (!detected)
-                yield return null;
+            // If not found, set detected count to 0
+            // if found, increment detected count
+            // correlate detected count to visual
+            while (true)
+            {
+                if (detected)
+                {
+                    detectedCount++;
+                    MovingBannerObjects.LoadingCircle.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.green, detectedCount / 100.0f);
+                    if (detectedCount > 99)
+                    {
+                        markerDetection.StopDetecting();
+                        break;
+                    }
+
+                    detected = false;
+                }
+
+                yield return new WaitForSeconds(0.025f);
+            }
 
             arUcoMarkerGameObject.GetComponent<ArUcoDetectionHoloLensUnity.ArUcoMarkerDetection>().onMarkerDetected.RemoveListener(OnConfirmed);
         }
@@ -200,9 +233,6 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         // Play notification sound
         audioPlayer.clip = WelcomeSound;
         audioPlayer.Play();
-
-
-        // Make marker visual
 
 
         // Detected marker, fade out background, icons, and text
@@ -224,8 +254,6 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         audioPlayer.clip = BeepingSound;
         audioPlayer.Play();
         yield return new WaitWhile(() => audioPlayer.isPlaying);
-
-        yield return new WaitForSeconds(0.2f);
 
         bannerParent.GetComponent<FollowCameraScript>().enabled = false;
 
@@ -250,7 +278,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         Vector3 targetPosition = PlaySpace.position;
         
         // Offset the current position, then make it fall
-        KeyboardAndItems.position = new Vector3(targetPosition.x, targetPosition.y + 1000, targetPosition.z);
+        KeyboardAndItems.position = new Vector3(targetPosition.x, targetPosition.y + 2, targetPosition.z);
         var FallDownTween = KeyboardAndItems.DOMoveY(targetPosition.y, FallSound.length).SetEase(fallingDownEase);
         FallingAudioSource.clip = FallSound;
         FallingAudioSource.Play();

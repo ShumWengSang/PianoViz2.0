@@ -25,7 +25,7 @@ public class MarkerDetection : MonoBehaviour
         Sequence seq = DOTween.Sequence();
         seq.InsertCallback(0.2f, () => { marker.enabled = true; });
 
-        StartCoroutine(WaitForStopDetection());
+        // StartCoroutine(WaitForStopDetection());
     }
 
     public void StopDetecting()
