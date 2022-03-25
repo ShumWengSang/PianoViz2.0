@@ -71,6 +71,10 @@ public class GameSetupInstructionsGUI : MonoBehaviour
     [Header("Wait For Lower C to be pressed")]
     public UnityEvent OnWaitForLowerC;
     public UnityEvent AfterWaitForLowerC;
+    
+    [Header("Wait For Lower C to be pressed")]
+    public UnityEvent OnWaitForUpperC;
+    public UnityEvent AfterWaitForUpperC;
 
     [Space(10), Header("Sound Effects")]
     [SerializeField] private AudioClip NotificationSound;
@@ -82,6 +86,9 @@ public class GameSetupInstructionsGUI : MonoBehaviour
     [SerializeField] private AudioSource FallingAudioSource;
     
     private static readonly int Property = Shader.PropertyToID("_IridescenceIntensity");
+
+    private MidiNote lowerC;
+    private MidiNote upperC;
 
     // Start is called before the first frame update
     void Start()
@@ -98,9 +105,8 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         Startup();
         yield return StartCoroutine(arucoMarkerSequence());
         yield return StartCoroutine(WaitForPositionAdjust());
-        //yield return StartCoroutine(WaitForBluetooth());
-        //yield return StartCoroutine(WaitForLowerC());
-        Finished();
+        yield return StartCoroutine(WaitForBluetooth());
+        yield return StartCoroutine(WaitForKeyboardNoteRange());        Finished();
     }
     
     private void Startup()
@@ -397,13 +403,35 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         
         AfterWaitForBluetooth.Invoke();
     }
+
+    public IEnumerator WaitForKeyboardNoteRange()
+    {
+        while (upperC - lowerC != 24)
+        {
+            yield return StartCoroutine(WaitForLowerC());
+            yield return StartCoroutine(WaitForUpperC());
+
+            if (upperC - lowerC != 24)
+            {
+                // TODO: ADD ERROR SOUND
+            }
+            
+        }
+        AssignLowerCEvent.Invoke(lowerC, 0);
+        
+        var bannerFadeOut = DOTween.To(() => StaticBannerObjects.BannerBackground.material.GetFloat(Property),
+            x => StaticBannerObjects.BannerBackground.material.SetFloat(Property, x), 0.0f, 0.6f);
+        yield return bannerFadeOut.WaitForCompletion();
+        
+        StaticBannerObjects.SetActive(false);
+    }
     
     public IEnumerator WaitForLowerC()
     {
         StaticBannerObjects.Text.alpha = 0;
         
         // Fade in text
-        StaticBannerObjects.Text.text = "Press Lower C to continue ... ";
+        StaticBannerObjects.Text.text = "Press Left Most C to continue ... ";
         var textFadeIn = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 1.0f, 2.0f);
         yield return textFadeIn.WaitForCompletion();
         
@@ -415,7 +443,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
             if ((int) note % 12 == 0) // check that the note is a C
             {
                 CPressed = true;
-                AssignLowerCEvent.Invoke(note, velocity);
+                lowerC = note;
             }
         }
 
@@ -427,13 +455,42 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         BleMidiBroadcaster.onNoteDown -= OnKeyboardPressed;
         AfterWaitForLowerC.Invoke();
         
-        var bannerFadeOut = DOTween.To(() => StaticBannerObjects.BannerBackground.material.GetFloat(Property),
-            x => StaticBannerObjects.BannerBackground.material.SetFloat(Property, x), 0.0f, 0.6f);
         var textFadeOut = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 0.0f, 0.6f);
-        yield return textFadeIn.WaitForCompletion();
-        yield return bannerFadeOut.WaitForCompletion();
+        yield return textFadeOut.WaitForCompletion();
         
-        StaticBannerObjects.SetActive(false);
+    }
+    
+    public IEnumerator WaitForUpperC()
+    {
+        StaticBannerObjects.Text.alpha = 0;
+        
+        // Fade in text
+        StaticBannerObjects.Text.text = "Press The Right Most C to Begin ... ";
+        var textFadeIn = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 1.0f, 2.0f);
+        yield return textFadeIn.WaitForCompletion();
+        
+        OnWaitForUpperC.Invoke();
+        bool CPressed = false;
+
+        void OnKeyboardPressed(MidiNote note, int velocity)
+        {
+            if ((int) note % 12 == 0) // check that the note is a C
+            {
+                upperC = note;
+                CPressed = true;
+            }
+        }
+
+        BleMidiBroadcaster.onNoteDown += OnKeyboardPressed;
+        
+        while(!CPressed)
+            yield return null;
+        
+        BleMidiBroadcaster.onNoteDown -= OnKeyboardPressed;
+        AfterWaitForUpperC.Invoke();
+        
+        var textFadeOut = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 0.0f, 0.6f);
+        yield return textFadeOut.WaitForCompletion();
     }
     
     

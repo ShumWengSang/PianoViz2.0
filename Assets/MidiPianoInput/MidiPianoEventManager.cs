@@ -93,16 +93,17 @@ namespace MidiPianoInput
 
         private void OnMistake(MidiNote note, int velocity)
         {
-            MPTKEvent mistakeNote = new MPTKEvent()
-            {
-                Command = MPTKCommand.NoteOn,
-                Value = (int)note - 12, // play in the wrong octive so it sound extra wrong
-                Channel = 0,
-                Duration = 250,
-                Velocity = velocity,
-                Delay = 0,
-            };
-            midiStreamPlayer.MPTK_PlayEvent(mistakeNote);
+            // MPTKEvent mistakeNote = new MPTKEvent()
+            // {
+            //     Command = MPTKCommand.NoteOn,
+            //     Value = (int)note - 12, // play in the wrong octive so it sound extra wrong
+            //     Channel = 0,
+            //     Duration = 250,
+            //     Velocity = velocity,
+            //     Delay = 0,
+            // };
+            //midiStreamPlayer.MPTK_PlayEvent(mistakeNote);
+            // TODO: PLAY AN ERROR SOUND WHEN THEY MAKE A MISTAKE
         }
 
         private void Update()
