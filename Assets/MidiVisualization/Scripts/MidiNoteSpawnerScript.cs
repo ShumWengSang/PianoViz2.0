@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using DG.Tweening;
+using Microsoft.MixedReality.Toolkit.UI;
 using MidiPianoInput;
 using MidiPlayerTK;
 using UnityEngine;
@@ -40,6 +41,7 @@ public class MidiNoteSpawnerScript : MonoBehaviour
     
     private Transform[] startKeys;
     private Transform[] endKeys;
+    private int beatCounter = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -65,27 +67,51 @@ public class MidiNoteSpawnerScript : MonoBehaviour
     {
         tempoVisual.Kill();
     }
-
-    public int numerator = 3;
+    
 
     private void OnMusicStart(string midiname )
     {
         Debug.LogFormat($"Start playing midi {midiname}");
         Debug.LogFormat($"Midi tempo of {midiFilePlayer.MPTK_Tempo.ToString()}");
+        Debug.LogFormat($"Midi pulse length of {midiFilePlayer.MPTK_PulseLenght.ToString()}");
         Debug.LogFormat($"Midi numerator of {midiFilePlayer.midiLoaded.MPTK_TimeSigNumerator.ToString()}");
-        tempoVisual = DOTween.Sequence();
+
+
+        double timeBetweenQuaterNote =
+            midiFilePlayer.MPTK_PulseLenght;
+         
+        tempoVisual = DOTween.Sequence();        
+        this.beatCounter = 0;
+        Debug.LogFormat($"Reset Counter 1");
         tempoVisual.AppendCallback(() =>
         {
             // Spawn horizontal bars
             GameObject instance = Instantiate(barPrefabStart, activeBars, true);
             instance.SetActive(true);
+
             instance.transform.DOMoveY(barPrefabEnd.transform.position.y, tweenTime)
                 .SetEase(tweenEase).OnComplete(() =>
-            {
-                beatGenerator?.PlaySound(0);
-                Destroy(instance);
-            });
-        }).AppendInterval((float)midiFilePlayer.MPTK_Tempo / 60.0f /  numerator).SetLoops(-1);
+                {
+                    this.beatCounter++;
+                    Debug.LogFormat($"Counter {this.beatCounter.ToString()}");
+                    if (this.beatCounter >= 4)
+                    {
+                        this.beatCounter = 0;
+                        Debug.LogFormat($"Reset Counter");
+                    }
+
+                    beatGenerator?.PlaySound(this.beatCounter);
+                    Destroy(instance);
+                });
+        }).AppendInterval((float)timeBetweenQuaterNote).SetLoops(-1);
+    }
+
+    public void OnChangeTimeScale(SliderEventData newTimeScale)
+    {
+        if (tempoVisual != null)
+        {
+            tempoVisual.timeScale = newTimeScale.NewValue;
+        }
     }
     
     private void PopulateKeyArray(Transform parent, ref Transform[] keys)

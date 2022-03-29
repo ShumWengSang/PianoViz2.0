@@ -51,7 +51,11 @@ public class GameSetupInstructionsGUI : MonoBehaviour
     [SerializeField, Header("Falling Down")]
     private Ease fallingDownEase = Ease.InCubic;
     [SerializeField] private Transform KeyboardAndItems;
-    
+    [SerializeField] private Transform PositionAdjustments;
+    [SerializeField] private Transform SpeedSlider;
+    [SerializeField] private Transform NoteSpawner;
+    [SerializeField] private Transform outline;
+    [SerializeField] private Transform Keyboard;
     [Header("Setup And Teardown")]
     public UnityEvent OnStartup;
     public UnityEvent OnFinished;
@@ -75,6 +79,8 @@ public class GameSetupInstructionsGUI : MonoBehaviour
     [Header("Wait For Lower C to be pressed")]
     public UnityEvent OnWaitForUpperC;
     public UnityEvent AfterWaitForUpperC;
+
+    [Header("On thud sound")] public UnityEvent OnKeyboardDropped;
 
     [Space(10), Header("Sound Effects")]
     [SerializeField] private AudioClip NotificationSound;
@@ -181,7 +187,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         audioPlayer.Play();
 
         // Wait a bit
-        yield return new WaitForSeconds(3.0f);
+        yield return new WaitForSeconds(1.0f);
         // Now start aruco detection
         arUcoMarkerGameObject.GetComponent<MarkerDetection>().StartDetection();
         // Add waiting sound
@@ -219,7 +225,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
                 {
                     detectedCount++;
                     MovingBannerObjects.LoadingCircle.GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.green, detectedCount / 100.0f);
-                    if (detectedCount > 99)
+                    if (detectedCount > 10)
                     {
                         markerDetection.StopDetecting();
                         break;
@@ -228,7 +234,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
                     detected = false;
                 }
 
-                yield return new WaitForSeconds(0.025f);
+                yield return new WaitForSeconds(0.01f);
             }
 
             arUcoMarkerGameObject.GetComponent<ArUcoDetectionHoloLensUnity.ArUcoMarkerDetection>().onMarkerDetected.RemoveListener(OnConfirmed);
@@ -276,6 +282,10 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         StaticBannerObjects.Button.gameObject.SetActive(false);
         StaticBannerObjects.Text.alpha = 0;
         arucoMarkerVisual.gameObject.SetActive(true);
+        PositionAdjustments.gameObject.SetActive(false);
+        SpeedSlider.gameObject.SetActive(false);
+        NoteSpawner.gameObject.SetActive(true);
+        outline.gameObject.SetActive(true);
         
         // Make the PlaySpace Fall in
         KeyboardAndItems.gameObject.SetActive(true);
@@ -291,8 +301,18 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         yield return FallDownTween.WaitForCompletion();
         yield return new WaitWhile(() => FallingAudioSource.isPlaying);
 
+        // Slam
+        OnKeyboardDropped?.Invoke();
         audioPlayer.clip = ThudSound;
         audioPlayer.Play();
+        
+        // Pulse all the keys
+        foreach (var child in Keyboard.GetComponentsInChildren<Transform>())
+        {
+            child.GetComponent<keyboardKeyHighlights>()?.SetModeIrridescentPulse(true);
+            yield return null;
+        }
+        
         yield return new WaitWhile(() => audioPlayer.isPlaying);
         
         // Fade out the marker
@@ -340,8 +360,15 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         while(!confirmed)
             yield return null;
         
+        // Stop pulse
+        foreach (var child in Keyboard.GetComponentsInChildren<Transform>())
+        {
+            child.GetComponent<keyboardKeyHighlights>()?.SetModeOff();
+            yield return null;
+        }
         StaticBannerObjects.Button.OnClick.RemoveListener(OnConfirmed);
         StaticBannerObjects.Button.gameObject.SetActive(false);
+        outline.gameObject.SetActive(false);
         audioPlayer.clip = WelcomeSound;
         audioPlayer.Play();
         AfterWaitForPositionAdjust.Invoke();
@@ -349,6 +376,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         yield return textFadeOu.WaitForCompletion();
         yield return new WaitWhile(() => audioPlayer.isPlaying);
         
+
         Debug.Log("Finished Adjusting Position");
     }
 
