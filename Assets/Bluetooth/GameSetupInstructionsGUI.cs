@@ -315,6 +315,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
             child.GetComponent<keyboardKeyHighlights>()?.SetModeIrridescentPulse(true);
             yield return null;
         }
+
         
         yield return new WaitWhile(() => audioPlayer.isPlaying);
         
