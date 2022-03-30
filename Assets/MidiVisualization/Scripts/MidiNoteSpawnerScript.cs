@@ -147,7 +147,7 @@ public class MidiNoteSpawnerScript : MonoBehaviour
                             NoteTweenScript script = instance.AddComponent<NoteTweenScript>();
                             script.keyboardKeyHighlights = keyboard.GetChild(noteIndex).GetComponent<keyboardKeyHighlights>();
 
-                            script.DOMoveScale(endKeys[noteIndex].position, tweenTime, mptkEvent.Duration * 0.001f,
+                            script.DOMoveScale(notePaths.position, tweenTime, mptkEvent.Duration * 0.001f,
                                     tweenEase)
                                 //.SetEase(tweenEase)
                                 .OnComplete(() => { Destroy(instance); });

@@ -42,12 +42,8 @@ public class NoteTweenScript : MonoBehaviour
     public Sequence DOMoveScale(Vector3 endPos, float duration, float backDelay, Ease ease)
     {
         // not sure why i have to devide by 5 but it works...
-        Vector3 endLocal = transform.InverseTransformPoint(endPos) / 5;
-        
-        // make sure that desination only needs to move in the local y direction
-        Assert.IsTrue(Mathf.Abs(0.0f - endLocal.x) < 0.001);
-        Assert.IsTrue(Mathf.Abs(0.0f - endLocal.z) < 0.001);
-        
+        Vector3 endLocal = transform.InverseTransformPoint(endPos) / 5f;
+
         float endY = endLocal.y;
         return DOTween.Sequence()
             .Insert(0,
