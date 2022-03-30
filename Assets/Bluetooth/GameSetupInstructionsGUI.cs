@@ -23,6 +23,8 @@ public class BannerObjectHolders
 
     public ButtonConfigHelper Button;
 
+    public SpriteRenderer Texture;
+
     public void SetActive(bool active)
     {
         LoadingCircle.parent.gameObject.SetActive(active);
@@ -281,6 +283,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         StaticBannerObjects.Icon.gameObject.SetActive(false);
         StaticBannerObjects.Button.gameObject.SetActive(false);
         StaticBannerObjects.Text.alpha = 0;
+        StaticBannerObjects.Texture.gameObject.SetActive(false);
         arucoMarkerVisual.gameObject.SetActive(true);
         PositionAdjustments.gameObject.SetActive(false);
         SpeedSlider.gameObject.SetActive(false);
@@ -386,6 +389,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         StaticBannerObjects.SetActive(true);
         StaticBannerObjects.Button.gameObject.SetActive(false);
         StaticBannerObjects.Text.alpha = 0;
+        StaticBannerObjects.Texture.gameObject.SetActive(true);
         
         // Fade in text
         StaticBannerObjects.Text.text = "Waiting for Bluetooth signal...";
