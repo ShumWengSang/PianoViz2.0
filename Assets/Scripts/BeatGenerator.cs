@@ -14,12 +14,12 @@ public class BeatGenerator : MonoBehaviour
     {
         if (i == 0)
         {
-            audioSource.clip = snap;
+            audioSource.clip = clap;
             audioSource.Play();
         }
         else
         {
-            audioSource.clip = clap;
+            audioSource.clip = snap;
             audioSource.Play();
         }
     }

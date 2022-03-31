@@ -92,6 +92,11 @@ public class GameSetupInstructionsGUI : MonoBehaviour
     [SerializeField] private AudioClip ThudSound;
     [SerializeField] private AudioClip BeepingSound;
     [SerializeField] private AudioSource FallingAudioSource;
+
+    [SerializeField] private ButtonConfigHelper GoToManualAdjustment;
+    [SerializeField] private ButtonConfigHelper FinishPositionAdjustment;
+
+    [Header("Textures")] [SerializeField] private Sprite PressLowerC;
     
     private static readonly int Property = Shader.PropertyToID("_IridescenceIntensity");
 
@@ -114,7 +119,8 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         yield return StartCoroutine(arucoMarkerSequence());
         yield return StartCoroutine(WaitForPositionAdjust());
         yield return StartCoroutine(WaitForBluetooth());
-        yield return StartCoroutine(WaitForKeyboardNoteRange());        Finished();
+        yield return StartCoroutine(WaitForKeyboardNoteRange());    
+        Finished();
     }
     
     private void Startup()
@@ -150,7 +156,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
 
     public IEnumerator FadeInFadeOutText(string newText, TextMeshPro tmp, bool fadeOut = true)
     {
-        MovingBannerObjects.Text.text = newText;
+        tmp.text = newText;
         var bannerFadeIn = DOTween.To(() => tmp.alpha, x => tmp.alpha = x, 1.0f, 2.0f);
         // Fade in text
         yield return bannerFadeIn.WaitForCompletion();
@@ -258,17 +264,17 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         bannerParent.GetComponent<FollowCameraScript>().enabled = false;
         var bannerFadeOut = DOTween.To(() => MovingBannerObjects.BannerBackground.material.GetFloat(Property),
             x => MovingBannerObjects.BannerBackground.material.SetFloat(Property, x), 0.0f, 0.6f);
-        yield return bannerFadeOut.WaitForCompletion();
+        MovingBannerObjects.BannerBackground.material.DOFade(0, 0.6f);
+
         yield return new WaitWhile(() => audioPlayer.isPlaying);
-        yield return new WaitForSeconds(0.2f);
-        
+
         MovingBannerObjects.BannerBackground.gameObject.SetActive(false);
 
-        // wait for 3 seconds to show marker detection
+        // wait for beeps to show marker detection
         audioPlayer.clip = BeepingSound;
         audioPlayer.Play();
-        yield return new WaitWhile(() => audioPlayer.isPlaying);
-
+        yield return new WaitForSeconds(BeepingSound.length - 0.1f);
+        yield return bannerFadeOut.WaitForCompletion();
         bannerParent.GetComponent<FollowCameraScript>().enabled = false;
 
     }
@@ -338,10 +344,8 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         audioPlayer.Play();
         
         // Fade in text saying to confirm placement
-        StaticBannerObjects.Text.text = "Adjust Placement with sliders.";
-        var textFadeIn = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 1.0f, 2.0f);
-        yield return textFadeIn.WaitForCompletion();
-        
+        yield return StartCoroutine(FadeInFadeOutText("Please align the virtual keyboard outline with the real-world keyboard", StaticBannerObjects.Text, false));
+
         audioPlayer.clip = NotificationSound;
         audioPlayer.Play();
         
@@ -364,12 +368,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         while(!confirmed)
             yield return null;
         
-        // Stop pulse
-        foreach (var child in Keyboard.GetComponentsInChildren<Transform>())
-        {
-            child.GetComponent<keyboardKeyHighlights>()?.SetModeOff();
-            yield return null;
-        }
+
         StaticBannerObjects.Button.OnClick.RemoveListener(OnConfirmed);
         StaticBannerObjects.Button.gameObject.SetActive(false);
         outline.gameObject.SetActive(false);
@@ -383,6 +382,12 @@ public class GameSetupInstructionsGUI : MonoBehaviour
 
         Debug.Log("Finished Adjusting Position");
     }
+    
+    private IEnumerator ManualAdjustKeyboard()
+    {
+        
+        yield return null;
+    }
 
     public IEnumerator WaitForBluetooth()
     {
@@ -393,9 +398,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         StaticBannerObjects.Texture.gameObject.SetActive(true);
         
         // Fade in text
-        StaticBannerObjects.Text.text = "Waiting for Bluetooth signal...";
-        var textFadeIn = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 1.0f, 2.0f);
-        yield return textFadeIn.WaitForCompletion();
+        yield return StartCoroutine(FadeInFadeOutText("Please turn on keyboard Bluetooth", StaticBannerObjects.Text, false));
         
         audioPlayer.clip = NotificationSound;
         audioPlayer.Play();
@@ -422,8 +425,11 @@ public class GameSetupInstructionsGUI : MonoBehaviour
 
         
         OnWaitForBluetooth.Invoke();
-        while(!bleModel.IsConnected())
+        while (!bleModel.IsConnected())
+        {
             yield return null;
+        }
+
         sequence.Kill();
         
         audioPlayer.clip = WelcomeSound;
@@ -433,9 +439,19 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         
         StaticBannerObjects.LoadingCircle.gameObject.SetActive(false);
         StaticBannerObjects.Icon.gameObject.SetActive(false);
+        StaticBannerObjects.Texture.gameObject.SetActive(false);
         
         AfterWaitForBluetooth.Invoke();
+        
+        // Stop pulse
+        foreach (var child in Keyboard.GetComponentsInChildren<Transform>())
+        {
+            child.GetComponent<keyboardKeyHighlights>()?.SetModeOff();
+            yield return null;
+        }
     }
+
+
 
     public IEnumerator WaitForKeyboardNoteRange()
     {
