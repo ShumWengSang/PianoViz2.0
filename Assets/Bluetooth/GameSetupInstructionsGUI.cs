@@ -93,15 +93,24 @@ public class GameSetupInstructionsGUI : MonoBehaviour
     [SerializeField] private AudioClip BeepingSound;
     [SerializeField] private AudioSource FallingAudioSource;
 
-    [SerializeField] private ButtonConfigHelper GoToManualAdjustment;
-    [SerializeField] private ButtonConfigHelper FinishPositionAdjustment;
-
-    [Header("Textures")] [SerializeField] private Sprite PressLowerC;
+    [Header("Textures")] 
+    [SerializeField] private Sprite PressLowerC;
+    [SerializeField] private Sprite PressHigherC;
+    [SerializeField] private SpriteRenderer outlineRendererA;
+    [SerializeField] private SpriteRenderer outlineRendererB;
+    [SerializeField] private GameObject buttonHolders;
     
     private static readonly int Property = Shader.PropertyToID("_IridescenceIntensity");
 
     private MidiNote lowerC;
     private MidiNote upperC;
+
+    public void TogglePositionAdjustments()
+    {
+        GameObject o;
+        (o = PositionAdjustments.gameObject).SetActive(!PositionAdjustments.gameObject.activeInHierarchy);
+        outline.gameObject.SetActive(o.activeInHierarchy);
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -144,12 +153,13 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         
         arucoMarkerVisual.gameObject.SetActive(false);
         KeyboardAndItems.gameObject.SetActive(false);
-
+        buttonHolders.gameObject.SetActive(false);
         OnStartup.Invoke();
     }
 
     private void Finished()
     {
+        buttonHolders.SetActive(true);
         PlaySpace.parent = PlaySpaceParent;
         OnFinished.Invoke();
     }
@@ -279,6 +289,12 @@ public class GameSetupInstructionsGUI : MonoBehaviour
 
     }
 
+    IEnumerator DisplayAdjustable()
+    {
+        yield return new WaitForSeconds(5.0f);
+        PositionAdjustments.gameObject.SetActive(true);
+    }
+
     public IEnumerator WaitForPositionAdjust()
     {
         // Start up, turn off blue banner + objects
@@ -295,6 +311,8 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         SpeedSlider.gameObject.SetActive(false);
         NoteSpawner.gameObject.SetActive(true);
         outline.gameObject.SetActive(true);
+        outlineRendererA.gameObject.SetActive(false);
+        outlineRendererB.gameObject.SetActive(false);
         
         // Make the PlaySpace Fall in
         KeyboardAndItems.gameObject.SetActive(true);
@@ -349,7 +367,9 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         audioPlayer.clip = NotificationSound;
         audioPlayer.Play();
         
-        // Turn on texture
+        // todo: Turn on texture
+        outlineRendererA.gameObject.SetActive(true);
+        outlineRendererB.gameObject.SetActive(true);
         
         // Turn on button
         StaticBannerObjects.Button.gameObject.SetActive(true);
@@ -358,6 +378,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         OnWaitForPositionAdjust.Invoke();
         bool confirmed = false;
 
+        var coroutine = StartCoroutine(DisplayAdjustable());
         void OnConfirmed()
         {
             confirmed = true;
@@ -365,10 +386,14 @@ public class GameSetupInstructionsGUI : MonoBehaviour
 
         StaticBannerObjects.Button.OnClick.AddListener(OnConfirmed);
         
+        
         while(!confirmed)
             yield return null;
         
-
+        StopCoroutine(coroutine);
+        PositionAdjustments.gameObject.SetActive(false);
+        outlineRendererA.gameObject.SetActive(false);
+        outlineRendererB.gameObject.SetActive(false);
         StaticBannerObjects.Button.OnClick.RemoveListener(OnConfirmed);
         StaticBannerObjects.Button.gameObject.SetActive(false);
         outline.gameObject.SetActive(false);
@@ -483,7 +508,8 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         StaticBannerObjects.Text.text = "Press Left Most C to continue ... ";
         var textFadeIn = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 1.0f, 2.0f);
         yield return textFadeIn.WaitForCompletion();
-        
+        StaticBannerObjects.Texture.sprite = PressLowerC;
+        StaticBannerObjects.Texture.gameObject.SetActive(true);
         OnWaitForLowerC.Invoke();
         bool CPressed = false;
 
@@ -503,7 +529,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         
         BleMidiBroadcaster.onNoteDown -= OnKeyboardPressed;
         AfterWaitForLowerC.Invoke();
-        
+        StaticBannerObjects.Texture.gameObject.SetActive(false);
         var textFadeOut = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 0.0f, 0.6f);
         yield return textFadeOut.WaitForCompletion();
         
@@ -517,7 +543,8 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         StaticBannerObjects.Text.text = "Press The Right Most C to Begin ... ";
         var textFadeIn = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 1.0f, 2.0f);
         yield return textFadeIn.WaitForCompletion();
-        
+        StaticBannerObjects.Texture.sprite = PressHigherC;
+        StaticBannerObjects.Texture.gameObject.SetActive(true);
         OnWaitForUpperC.Invoke();
         bool CPressed = false;
 
@@ -537,7 +564,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         
         BleMidiBroadcaster.onNoteDown -= OnKeyboardPressed;
         AfterWaitForUpperC.Invoke();
-        
+        StaticBannerObjects.Texture.gameObject.SetActive(false);
         var textFadeOut = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 0.0f, 0.6f);
         yield return textFadeOut.WaitForCompletion();
     }
