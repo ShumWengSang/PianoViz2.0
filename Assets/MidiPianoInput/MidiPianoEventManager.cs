@@ -1,6 +1,7 @@
 ﻿//#define PIANO_EVENT_LOGGING
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using MidiPlayerTK;
@@ -40,6 +41,8 @@ namespace MidiPianoInput
 
         [SerializeField] private Material successMaterial;
         [SerializeField] private Material failMaterial;
+        [SerializeField] private Transform keysParent;
+        private Transform[] keys;
 
         private bool _gameActive = false;
         public bool gameActive
@@ -89,21 +92,39 @@ namespace MidiPianoInput
             {
                 lowerC = note;
             };
+
+            keys = keysParent.GetComponentsInChildren<Transform>();
         }
 
+        [SerializeField] private int failChannel;
         private void OnMistake(MidiNote note, int velocity)
         {
-            // MPTKEvent mistakeNote = new MPTKEvent()
-            // {
-            //     Command = MPTKCommand.NoteOn,
-            //     Value = (int)note - 12, // play in the wrong octive so it sound extra wrong
-            //     Channel = 0,
-            //     Duration = 250,
-            //     Velocity = velocity,
-            //     Delay = 0,
-            // };
-            //midiStreamPlayer.MPTK_PlayEvent(mistakeNote);
+            if (midiStreamPlayer.MPTK_ChannelPresetGetIndex(0) == 0)
+            {
+                bool ret = midiStreamPlayer.MPTK_ChannelPresetChange(0, 111, -1);
+                Debug.Log($"Change to preset 111 {ret}");
+            }
+
+            MPTKEvent mistakeNote = new MPTKEvent()
+            {
+                Command = MPTKCommand.NoteOn,
+                Value = (int)note, 
+                Channel = failChannel,
+                Duration = 256,
+                Velocity = velocity,
+                Delay = 0,
+            };
+            midiStreamPlayer.MPTK_PlayEvent(mistakeNote);
             // TODO: PLAY AN ERROR SOUND WHEN THEY MAKE A MISTAKE
+
+            //StartCoroutine(ChangeBackChannelPreset());
+            // ret = midiStreamPlayer.MPTK_ChannelPresetChange(0, 0, -1);
+        }
+
+        IEnumerator ChangeBackChannelPreset()
+        {
+            yield return null;
+            midiStreamPlayer.MPTK_ChannelPresetChange(0, 0);
         }
 
         private void Update()
@@ -168,6 +189,11 @@ namespace MidiPianoInput
 #endif
                     if(nextNote.noteVisualization)
                         nextNote.noteVisualization.GetComponent<Renderer>().material = successMaterial;
+                    
+                    if (midiStreamPlayer.MPTK_ChannelPresetGetIndex(0) != 0)
+                    {
+                        bool ret = midiStreamPlayer.MPTK_ChannelPresetChange(0, 0, -1);
+                    }
                     midiStreamPlayer.MPTK_PlayEvent(nextNote.mptkEvent);
 
                     // wait for a release now at the correct time

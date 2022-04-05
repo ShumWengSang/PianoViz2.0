@@ -51,3 +51,17 @@ MonoBehaviour:
       id: 1
       description: Select
       axisConstraint: 2
+  - localizationKey: 
+    keyword: Play
+    keyCode: 32
+    action:
+      id: 1
+      description: Select
+      axisConstraint: 2
+  - localizationKey: 
+    keyword: Adjust
+    keyCode: 27
+    action:
+      id: 1
+      description: Select
+      axisConstraint: 2

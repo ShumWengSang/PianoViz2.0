@@ -78,11 +78,11 @@ public class MidiNoteSpawnerScript : MonoBehaviour
 
 
         double timeBetweenQuaterNote =
-            midiFilePlayer.MPTK_PulseLenght;
+            // midiFilePlayer.MPTK_PulseLenght;
+            60 / midiFilePlayer.MPTK_Tempo;
          
         tempoVisual = DOTween.Sequence();        
         this.beatCounter = 0;
-        Debug.LogFormat($"Reset Counter 1");
         tempoVisual.AppendCallback(() =>
         {
             // Spawn horizontal bars
@@ -93,11 +93,9 @@ public class MidiNoteSpawnerScript : MonoBehaviour
                 .SetEase(tweenEase).OnComplete(() =>
                 {
                     this.beatCounter++;
-                    Debug.LogFormat($"Counter {this.beatCounter.ToString()}");
                     if (this.beatCounter >= 4)
                     {
                         this.beatCounter = 0;
-                        Debug.LogFormat($"Reset Counter");
                     }
 
                     beatGenerator?.PlaySound(this.beatCounter);
