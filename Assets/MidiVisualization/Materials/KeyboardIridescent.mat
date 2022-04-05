@@ -10,7 +10,7 @@ Material:
   m_Name: KeyboardIridescent
   m_Shader: {fileID: 4800000, guid: 5bdea20278144b11916d77503ba1467a, type: 3}
   m_ShaderKeywords: _ALPHAADDITIVE_ON _ALPHABLEND_ON _BORDER_LIGHT_USES_HOVER_COLOR
-    _ENVIRONMENT_COLORING _HOVER_LIGHT _RIM_LIGHT _SPECULAR_HIGHLIGHTS
+    _ENVIRONMENT_COLORING _RIM_LIGHT _SPECULAR_HIGHLIGHTS
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 1
   m_DoubleSidedGI: 0
@@ -123,7 +123,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _HoverLight: 1
+    - _HoverLight: 0
     - _HoverLightOpaque: 0
     - _IgnoreZScale: 0
     - _IndependentCorners: -4.46

@@ -4,6 +4,7 @@ using DG.Tweening;
 using Microsoft.MixedReality.Toolkit.UI;
 using MidiPianoInput;
 using MidiPlayerTK;
+using PlaybackControls;
 using UnityEngine;
 using UnityEngine.Assertions;
 using UnityEngine.Events;
@@ -30,7 +31,6 @@ public class MidiNoteSpawnerScript : MonoBehaviour
 
     [FormerlySerializedAs("eventManager")] [SerializeField] private MidiPianoEventManager midiPianoEventManager;
 
-    [SerializeField] private MidiNote startingNote;
     [SerializeField] private int midiChanel = 0;
 
     [SerializeField] private Ease tweenEase = Ease.Linear;
@@ -133,7 +133,7 @@ public class MidiNoteSpawnerScript : MonoBehaviour
                 case MPTKCommand.NoteOn:
                 {
                     MidiNote note = (MidiNote) mptkEvent.Value;
-                    int noteIndex = note - startingNote;
+                    int noteIndex = note - (MidiNote)SongToggle.selectedSong.startingNote;
 
                     // note is in key range and chanel matches
                     if (mptkEvent.Channel == midiChanel)

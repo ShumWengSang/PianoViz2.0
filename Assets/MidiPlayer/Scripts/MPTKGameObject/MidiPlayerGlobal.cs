@@ -13,6 +13,7 @@ namespace MidiPlayerTK
     /// Singleton class to manage all global features of MPTK.
     /// More information here: https://paxstellar.fr/midiplayerglobal/
     /// </summary>
+    
     [HelpURL("https://paxstellar.fr/midiplayerglobal/")]
     public partial class MidiPlayerGlobal : MonoBehaviour
     {
