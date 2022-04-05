@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb41c8335e2ca96449f3991db5fa5702, type: 3}
+  m_Name: PlaybackIcons
+  m_EditorClassIdentifier: 
+  quadIcons: []
+  spriteIcons:
+  - {fileID: 5059933567641180573, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: -2184718183493942300, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: -874280945452036893, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: -3970631731693242350, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: 8001390454725827059, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: 3291327306414536654, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: 7280120726372901633, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: 3927139548811162824, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: -6945740656643384875, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: -9221626900573305173, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: 2030824267687254415, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: -3707613710701302198, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: -8539403469408337409, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: -8275940624543479972, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: 7223601985410819702, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  - {fileID: -6814728122021094273, guid: 085b45cdbb75ba149abaa79cd4876ccb, type: 3}
+  charIconFont: {fileID: 0}
+  charIcons:
+  - Name: AppBarAdjust
+    Character: 60370
+  - Name: AppBarClose
+    Character: 59153
+  - Name: AppBarDone
+    Character: 59643
+  - Name: AppBarHide
+    Character: 59244
+  - Name: AppBarShow
+    Character: 59154
+  - Name: AppBarHome
+    Character: 60175
