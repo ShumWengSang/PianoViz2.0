@@ -1127,7 +1127,7 @@ Transform:
   - {fileID: 909042053}
   - {fileID: 861613333}
   m_Father: {fileID: 8067167225152857241}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &130392428
 GameObject:
@@ -2108,7 +2108,7 @@ Transform:
   - {fileID: 1100967548}
   - {fileID: 2979807062961484899}
   m_Father: {fileID: 8067167225152857241}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &320427805
 Mesh:
@@ -8320,6 +8320,86 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1001 &1191193743
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 8067167225152857241}
+    m_Modifications:
+    - target: {fileID: 1759559030904699792, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699792, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.63
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699792, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.892
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699792, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.918
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699792, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699792, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699792, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699792, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699792, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699792, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699792, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: midiFilePlayer
+      value: 
+      objectReference: {fileID: 85560492032128619}
+    - target: {fileID: 1759559030904699795, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: m_Name
+      value: Playback Controls
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 6b3fd4d6b1904634794377cec88d93df, type: 3}
+--- !u!4 &1191193744 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1759559030904699792, guid: 6b3fd4d6b1904634794377cec88d93df,
+    type: 3}
+  m_PrefabInstance: {fileID: 1191193743}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1197853506
 GameObject:
   m_ObjectHideFlags: 0
@@ -10652,7 +10732,7 @@ Transform:
   - {fileID: 1315663063}
   - {fileID: 2137942404}
   m_Father: {fileID: 8067167225152857241}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1648624098
 GameObject:
@@ -10690,7 +10770,7 @@ Transform:
   - {fileID: 714188633}
   - {fileID: 511481199}
   m_Father: {fileID: 8067167225152857241}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &1702488419
 Mesh:
@@ -11675,7 +11755,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8067167225152857241}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 90, y: 180, z: 0}
 --- !u!65 &1925223097
 BoxCollider:
@@ -15072,8 +15152,8 @@ MonoBehaviour:
   spatialize: 0
   AudioBufferLenght: 0
   AudioNumBuffers: 0
-  midiNameToPlay: MaryHadALittleLamp
-  midiIndexToPlay: 53
+  midiNameToPlay: Mary Had A Little Lamp
+  midiIndexToPlay: 1
   MPTK_StartPlayAtFirstNote: 0
   speed: 1
   durationEditorModeOnly: 
@@ -21143,7 +21223,6 @@ MonoBehaviour:
   barPrefabStart: {fileID: 44839873}
   barPrefabEnd: {fileID: 881730610}
   midiPianoEventManager: {fileID: 8067167223580734447}
-  startingNote: 60
   midiChanel: 0
   tweenEase: 2
   tweenTime: 2
@@ -31809,6 +31888,7 @@ Transform:
   m_LocalPosition: {x: 0, y: -0.323, z: 1.86}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
+  - {fileID: 1191193744}
   - {fileID: 1638395559}
   - {fileID: 1648624099}
   - {fileID: 1925223096}
