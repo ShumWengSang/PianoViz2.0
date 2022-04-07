@@ -69,7 +69,7 @@ public class MidiNoteSpawnerScript : MonoBehaviour
     }
     
 
-    private void OnMusicStart(string midiname )
+    private void OnMusicStart(string midiname)
     {
         Debug.LogFormat($"Start playing midi {midiname}");
         Debug.LogFormat($"Midi tempo of {midiFilePlayer.MPTK_Tempo.ToString()}");
@@ -80,7 +80,14 @@ public class MidiNoteSpawnerScript : MonoBehaviour
         double timeBetweenQuaterNote =
             // midiFilePlayer.MPTK_PulseLenght;
             60 / midiFilePlayer.MPTK_Tempo;
-         
+
+        var preplayMetronome = DOTween.Sequence();
+        midiFilePlayer.MPTK_Pause();
+        preplayMetronome.AppendInterval((float)timeBetweenQuaterNote * 8).AppendCallback(() =>
+        {
+            midiFilePlayer.MPTK_UnPause();
+        });
+        
         tempoVisual = DOTween.Sequence();        
         this.beatCounter = 0;
         tempoVisual.AppendCallback(() =>

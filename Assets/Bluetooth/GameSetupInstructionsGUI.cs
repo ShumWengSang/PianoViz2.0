@@ -102,8 +102,8 @@ public class GameSetupInstructionsGUI : MonoBehaviour
     
     private static readonly int Property = Shader.PropertyToID("_IridescenceIntensity");
 
-    private MidiNote lowerC;
-    private MidiNote upperC;
+    private MidiNote lowerC = (MidiNote)48;
+    private MidiNote upperC = (MidiNote)(48 + 16);
 
     public void TogglePositionAdjustments()
     {
@@ -505,7 +505,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         StaticBannerObjects.Text.alpha = 0;
         
         // Fade in text
-        StaticBannerObjects.Text.text = "Press Left Most C to continue ... ";
+        StaticBannerObjects.Text.text = "Press the first flashing key!";
         var textFadeIn = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 1.0f, 2.0f);
         yield return textFadeIn.WaitForCompletion();
         StaticBannerObjects.Texture.sprite = PressLowerC;
@@ -540,7 +540,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         StaticBannerObjects.Text.alpha = 0;
         
         // Fade in text
-        StaticBannerObjects.Text.text = "Press The Right Most C to Begin ... ";
+        StaticBannerObjects.Text.text = "Press the second flashing key!";
         var textFadeIn = DOTween.To(() => StaticBannerObjects.Text.alpha, x => StaticBannerObjects.Text.alpha = x, 1.0f, 2.0f);
         yield return textFadeIn.WaitForCompletion();
         StaticBannerObjects.Texture.sprite = PressHigherC;

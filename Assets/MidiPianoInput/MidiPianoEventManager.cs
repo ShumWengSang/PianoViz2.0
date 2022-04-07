@@ -67,7 +67,7 @@ namespace MidiPianoInput
         
         
         [SerializeField] private GameSetupInstructionsGUI gameSetup;
-        private MidiNote lowerC = 0;
+        private MidiNote lowerC = (MidiNote)48;
 
         private void OnGameActive()
         {
