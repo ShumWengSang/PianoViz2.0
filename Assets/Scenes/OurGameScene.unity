@@ -8385,6 +8385,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
+      propertyPath: notespawner
+      value: 
+      objectReference: {fileID: 2958196313386781842}
+    - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
       propertyPath: midiFilePlayer
       value: 
       objectReference: {fileID: 85560492032128619}
@@ -8768,6 +8773,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f496188b6660a44b444d30ba6ff815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  skipSequence: 0
   bleModel: {fileID: 2117728618}
   rotationEase: 16
   rotationDuration: 1.5
