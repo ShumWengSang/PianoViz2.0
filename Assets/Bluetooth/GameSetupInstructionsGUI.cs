@@ -33,6 +33,9 @@ public class BannerObjectHolders
 
 public class GameSetupInstructionsGUI : MonoBehaviour
 {
+    [SerializeField] private bool skipSequence = false;
+    
+    
     [SerializeField] private BleModel bleModel;
     [SerializeField] private Ease rotationEase = Ease.InOutCirc;
     [SerializeField] private float rotationDuration = 1f;
@@ -124,11 +127,19 @@ public class GameSetupInstructionsGUI : MonoBehaviour
 
     public IEnumerator Run()
     {
-        Startup();
-        yield return StartCoroutine(arucoMarkerSequence());
-        yield return StartCoroutine(WaitForPositionAdjust());
-        yield return StartCoroutine(WaitForBluetooth());
-        yield return StartCoroutine(WaitForKeyboardNoteRange());    
+        if (!skipSequence)
+        {
+            Startup();
+            yield return StartCoroutine(arucoMarkerSequence());
+            yield return StartCoroutine(WaitForPositionAdjust());
+            yield return StartCoroutine(WaitForBluetooth());
+            yield return StartCoroutine(WaitForKeyboardNoteRange());    
+        }
+        else
+        {
+            Debug.LogWarning("GameSetupInstructuionsGui.skipSequence is set to true! " +
+                             "this is useful for debugging, but remember to turn it off.");
+        }
         Finished();
     }
     

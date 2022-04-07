@@ -12,7 +12,7 @@
   <IndexSelectedSF>0</IndexSelectedSF>
   <MidiFiles>
     <string>Animal Crossing</string>
-    <string>Mary Had A Little Lamp</string>
+    <string>Mary Had A Little Lamb</string>
     <string>Tetris Theme</string>
   </MidiFiles>
 </MidiSet>

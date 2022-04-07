@@ -34,7 +34,7 @@ namespace PlaybackControls
     public class SongToggle : MonoBehaviour
     {
         [NonSerialized] private static SongToggle self;
-        [SerializeField] private MidiFilePlayer midiFilePlayer;
+        [SerializeField] private MidiNoteSpawnerScript notespawner;
         [SerializeField] private List<SongSelection> songList = new List<SongSelection>();
         [SerializeField] private bool refresh = false;
         private int selectedMidiIndex = -1;
@@ -53,12 +53,12 @@ namespace PlaybackControls
 
         private void Update()
         {
-            if (midiFilePlayer.MPTK_MidiIndex != selectedMidiIndex)
+            if (notespawner.midiFilePlayer.MPTK_MidiIndex != selectedMidiIndex)
             {
-                selectedMidiIndex = midiFilePlayer.MPTK_MidiIndex;
+                selectedMidiIndex = notespawner.midiFilePlayer.MPTK_MidiIndex;
                 songTitle.text = "• " + songList[selectedMidiIndex].songName + " •";
             }
-            TogglePlayButton.SetSpriteIcon(TogglePlayButton.IconSet.SpriteIcons[(midiFilePlayer.MPTK_IsPlaying? 7 : 1)]);
+            TogglePlayButton.SetSpriteIcon(TogglePlayButton.IconSet.SpriteIcons[(notespawner.midiFilePlayer.MPTK_IsPlaying? 7 : 1)]);
         }
 
         private void OnValidate()
@@ -105,31 +105,31 @@ namespace PlaybackControls
 
         public void NextSong()
         {
-            midiFilePlayer.MPTK_Stop();
-            if ( midiFilePlayer.MPTK_MidiIndex == songList.Count - 1)
-                midiFilePlayer.MPTK_MidiIndex = 0;
+            notespawner.StopSong();
+            if ( notespawner.midiFilePlayer.MPTK_MidiIndex == songList.Count - 1)
+                notespawner.midiFilePlayer.MPTK_MidiIndex = 0;
             else
-                ++midiFilePlayer.MPTK_MidiIndex;
+                ++notespawner.midiFilePlayer.MPTK_MidiIndex;
         }
 
         public void PrevSong()
         {
-            midiFilePlayer.MPTK_Stop();
-            if ( midiFilePlayer.MPTK_MidiIndex == 0)
-                midiFilePlayer.MPTK_MidiIndex = songList.Count - 1;
+            notespawner.StopSong();
+            if ( notespawner.midiFilePlayer.MPTK_MidiIndex == 0)
+                notespawner.midiFilePlayer.MPTK_MidiIndex = songList.Count - 1;
             else
-                --midiFilePlayer.MPTK_MidiIndex;
+                --notespawner.midiFilePlayer.MPTK_MidiIndex;
         }
 
         public void TogglePlay()
         {
-            if (midiFilePlayer.MPTK_IsPlaying)
+            if (notespawner.midiFilePlayer.MPTK_IsPlaying)
             {
-                midiFilePlayer.MPTK_Stop();
+                notespawner.StopSong();
             }
             else
             {
-                midiFilePlayer.MPTK_Play();
+                notespawner.PlaySong();
             }
         }
     }
