@@ -31,8 +31,6 @@ public class MidiNoteSpawnerScript : MonoBehaviour
 
     [FormerlySerializedAs("eventManager")] [SerializeField] private MidiPianoEventManager midiPianoEventManager;
 
-    [SerializeField] private int midiChanel = 0;
-
     [SerializeField] private Ease tweenEase = Ease.Linear;
     [SerializeField] private float tweenTime = 5;
 
@@ -157,7 +155,7 @@ public class MidiNoteSpawnerScript : MonoBehaviour
                     int noteIndex = note - (MidiNote)SongToggle.selectedSong.startingNote;
 
                     // note is in key range and chanel matches
-                    if (mptkEvent.Channel == midiChanel)
+                    if (mptkEvent.Channel == SongToggle.selectedSong.channel)
                     {
                         if (noteIndex >= 0 && noteIndex < startKeys.Length)
                         {
