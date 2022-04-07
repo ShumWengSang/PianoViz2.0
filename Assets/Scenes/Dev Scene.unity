@@ -5210,7 +5210,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 134ea5fbe0d34814893d719441b215a2, type: 2}
+  - {fileID: 2100000, guid: 7d4b682f0fce3004f8adc5ed548d982e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8546,6 +8546,16 @@ PrefabInstance:
       propertyPath: midiFilePlayer
       value: 
       objectReference: {fileID: 85560492032128619}
+    - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: songList.Array.data[0].startingNote
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: songList.Array.data[1].startingNote
+      value: 48
+      objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699795, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
       propertyPath: m_Name
@@ -15312,8 +15322,8 @@ MonoBehaviour:
   spatialize: 0
   AudioBufferLenght: 0
   AudioNumBuffers: 0
-  midiNameToPlay: Mary Had A Little Lamp
-  midiIndexToPlay: 1
+  midiNameToPlay: Mary Had A Little Lamb
+  midiIndexToPlay: 0
   MPTK_StartPlayAtFirstNote: 0
   speed: 1
   durationEditorModeOnly: 

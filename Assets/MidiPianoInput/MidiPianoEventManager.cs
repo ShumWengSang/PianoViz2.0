@@ -130,7 +130,7 @@ namespace MidiPianoInput
         {
             outlineFeedback.Kill();
             outlineFeedback = DOTween.Sequence();
-            outlineFeedback.Append(keyboardOutlineFeedback.material.DOColor(failColor, 0.3f));
+            outlineFeedback.Append(keyboardOutlineFeedback.material.DOColor(color, 0.3f));
             outlineFeedback.Append(keyboardOutlineFeedback.material.DOColor(Color.black, 0.1f));
         }
 
