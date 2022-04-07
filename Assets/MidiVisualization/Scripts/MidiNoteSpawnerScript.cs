@@ -12,7 +12,7 @@ using UnityEngine.Serialization;
 
 public class MidiNoteSpawnerScript : MonoBehaviour
 {
-    [SerializeField] private MidiFilePlayer midiFilePlayer;
+    [SerializeField] public MidiFilePlayer midiFilePlayer;
     [SerializeField] private MidiStreamPlayer midiStreamPlayer;
 
     // transform who's children is the starting pos of all the keys
@@ -110,6 +110,20 @@ public class MidiNoteSpawnerScript : MonoBehaviour
         {
             tempoVisual.timeScale = newTimeScale.NewValue;
         }
+    }
+
+    public void StopSong()
+    {
+        midiFilePlayer.MPTK_Stop();
+        foreach (Transform activeNote in activeNotes)
+        {
+            Destroy(activeNote.gameObject);
+        }
+    }
+
+    public void PlaySong()
+    {
+        midiFilePlayer.MPTK_Play();
     }
     
     private void PopulateKeyArray(Transform parent, ref Transform[] keys)
