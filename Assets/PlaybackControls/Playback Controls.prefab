@@ -47,14 +47,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 057ade711ea648fca212d0005062a865, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  midiFilePlayer: {fileID: 0}
+  notespawner: {fileID: 0}
   songList:
-  - songName: Animal Crossing
-    startingNote: 60
-  - songName: Mary Had A Little Lamp
-    startingNote: 60
+  - songName: Mary Had A Little Lamb
+    startingNote: 0
+    channel: 0
+  - songName: Petrichor
+    startingNote: 0
+    channel: 0
   - songName: Tetris Theme
     startingNote: 60
+    channel: 0
   refresh: 0
 --- !u!1 &1759559031431648942
 GameObject:

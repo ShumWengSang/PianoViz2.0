@@ -27,7 +27,7 @@ public class NoteTweenScript : MonoBehaviour
         Vector3 localPosition = transform.localPosition;
         Vector3 scale = transform.localScale;
         localPosition.y = frontY;
-        scale.y = backY - frontY;
+        scale.y = Mathf.Max(0, backY - frontY - 0.1f);
 
         transform.localPosition = localPosition;
         transform.localScale = scale;

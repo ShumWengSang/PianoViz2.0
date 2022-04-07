@@ -28,6 +28,7 @@ namespace PlaybackControls
     {
         [ReadOnly(true)] public string songName;
         [SerializeField] public startingMidiNote startingNote;
+        [SerializeField] public int channel;
     }
     
     [ExecuteInEditMode]
@@ -88,15 +89,20 @@ namespace PlaybackControls
                 newSongList.Add(new SongSelection
                 {
                     songName = fileName,
-                    startingNote = 0
+                    startingNote = startingMidiNote.C5,
+                    channel = 0
                 });
             }
 
             foreach (SongSelection song in songList)
             {
                 int index = MidiPlayerGlobal.MPTK_FindMidi(song.songName);
-                if(index != -1)
+                if (index != -1)
+                {
                     newSongList[index].startingNote = song.startingNote;
+                    newSongList[index].channel = song.channel;
+                }
+                
             }
 
             songList = newSongList;
