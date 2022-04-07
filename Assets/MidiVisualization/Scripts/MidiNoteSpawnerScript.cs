@@ -177,7 +177,16 @@ public class MidiNoteSpawnerScript : MonoBehaviour
                         else
                         {
                             Debug.LogWarning("Note out of range: " + note);
-                            goto default; // since it's not in range, just play the note normally
+                            DOTween.Sequence()
+                                .AppendInterval(tweenTime)
+                                .AppendCallback(() =>
+                                {
+                                    if (midiStreamPlayer.MPTK_ChannelPresetGetIndex(0) != 40)
+                                    {
+                                        bool ret = midiStreamPlayer.MPTK_ChannelPresetChange(0, 40, -1);
+                                    }
+                                    midiStreamPlayer.MPTK_PlayEvent(mptkEvent);
+                                });
                         }
                     }
                     else
@@ -192,6 +201,7 @@ public class MidiNoteSpawnerScript : MonoBehaviour
                         .AppendInterval(tweenTime)
                         .AppendCallback(() =>
                         {
+                            
                             midiStreamPlayer.MPTK_PlayEvent(mptkEvent);
                         });
                     break;

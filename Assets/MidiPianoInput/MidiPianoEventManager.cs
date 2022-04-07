@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using MidiPlayerTK;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -42,6 +43,12 @@ namespace MidiPianoInput
         [SerializeField] private Material successMaterial;
         [SerializeField] private Material failMaterial;
         [SerializeField] private Transform keysParent;
+        [SerializeField] private MeshRenderer keyboardOutlineFeedback;
+        [SerializeField] private Color successColor;
+        [SerializeField] private Color failColor;
+
+        private Sequence outlineFeedback;
+        
         private Transform[] keys;
 
         private bool _gameActive = false;
@@ -115,10 +122,16 @@ namespace MidiPianoInput
                 Delay = 0,
             };
             midiStreamPlayer.MPTK_PlayEvent(mistakeNote);
-            // TODO: PLAY AN ERROR SOUND WHEN THEY MAKE A MISTAKE
 
-            //StartCoroutine(ChangeBackChannelPreset());
-            // ret = midiStreamPlayer.MPTK_ChannelPresetChange(0, 0, -1);
+            DoOutlineFlash(failColor);
+        }
+
+        void DoOutlineFlash(Color color)
+        {
+            outlineFeedback.Kill();
+            outlineFeedback = DOTween.Sequence();
+            outlineFeedback.Append(keyboardOutlineFeedback.material.DOColor(failColor, 0.3f));
+            outlineFeedback.Append(keyboardOutlineFeedback.material.DOColor(Color.black, 0.1f));
         }
 
         IEnumerator ChangeBackChannelPreset()
@@ -196,6 +209,7 @@ namespace MidiPianoInput
                     }
                     midiStreamPlayer.MPTK_PlayEvent(nextNote.mptkEvent);
 
+                    DoOutlineFlash(successColor);
                     // wait for a release now at the correct time
                     nextNote.anticipatePress = false;
                     nextNote.fireTime += nextNote.fireDuration;
