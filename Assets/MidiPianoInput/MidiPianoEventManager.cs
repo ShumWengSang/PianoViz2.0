@@ -166,6 +166,8 @@ namespace MidiPianoInput
                     if(nextNote.noteVisualization)
                         nextNote.noteVisualization.GetComponent<Renderer>().material = failMaterial;
                     anticipated.Dequeue();
+                    
+                    DoOutlineFlash(failColor);
                 }
             }
         }

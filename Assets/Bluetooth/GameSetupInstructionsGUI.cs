@@ -171,6 +171,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
     private void Finished()
     {
         buttonHolders.SetActive(true);
+        SpeedSlider.gameObject.SetActive(true);
         PlaySpace.parent = PlaySpaceParent;
         OnFinished.Invoke();
     }
