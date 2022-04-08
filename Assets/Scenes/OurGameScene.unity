@@ -31132,7 +31132,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   midiStreamPlayer: {fileID: 1604925154785864207}
-  maxTimeDelta: 0.5
+  maxTimeDelta: 0.25
   successMaterial: {fileID: 2100000, guid: 3040a22261d40d54b931d94f58cf5822, type: 2}
   failMaterial: {fileID: 2100000, guid: de0f0d1bc665bf746b8f0179a82e19e2, type: 2}
   keysParent: {fileID: 7046578069959898083}
