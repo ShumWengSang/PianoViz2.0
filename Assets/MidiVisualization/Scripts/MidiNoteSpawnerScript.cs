@@ -85,7 +85,8 @@ public class MidiNoteSpawnerScript : MonoBehaviour
         {
             midiFilePlayer.MPTK_UnPause();
         });
-        
+        preplayMetronome.timeScale = midiFilePlayer.MPTK_Speed;
+
         tempoVisual = DOTween.Sequence();        
         this.beatCounter = 0;
         tempoVisual.AppendCallback(() =>
@@ -107,13 +108,14 @@ public class MidiNoteSpawnerScript : MonoBehaviour
                     Destroy(instance);
                 });
         }).AppendInterval((float)timeBetweenQuaterNote).SetLoops(-1);
+        tempoVisual.timeScale = midiFilePlayer.MPTK_Speed;
     }
 
-    public void OnChangeTimeScale(SliderEventData newTimeScale)
+    public void OnChangeTimeScale(float newTimeScale)
     {
         if (tempoVisual != null)
         {
-            tempoVisual.timeScale = newTimeScale.NewValue;
+            tempoVisual.timeScale = newTimeScale;
         }
     }
 
