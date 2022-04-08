@@ -29,6 +29,7 @@ namespace PlaybackControls
         [ReadOnly(true)] public string songName;
         [SerializeField] public startingMidiNote startingNote;
         [SerializeField] public int channel;
+        [SerializeField] public bool includeAccompaniment;
     }
     
     [ExecuteInEditMode]
@@ -90,7 +91,8 @@ namespace PlaybackControls
                 {
                     songName = fileName,
                     startingNote = startingMidiNote.C5,
-                    channel = 0
+                    channel = 0,
+                    includeAccompaniment = true
                 });
             }
 
@@ -101,6 +103,7 @@ namespace PlaybackControls
                 {
                     newSongList[index].startingNote = song.startingNote;
                     newSongList[index].channel = song.channel;
+                    newSongList[index].includeAccompaniment = song.includeAccompaniment;
                 }
                 
             }

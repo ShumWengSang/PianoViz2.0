@@ -192,6 +192,16 @@ public class MidiNoteSpawnerScript : MonoBehaviour
                     else
                     {
                         //goto default;
+                        DOTween.Sequence()
+                            .AppendInterval(tweenTime)
+                            .AppendCallback(() =>
+                            {
+                                if (midiStreamPlayer.MPTK_ChannelPresetGetIndex(mptkEvent.Channel) != 40)
+                                {
+                                    bool ret = midiStreamPlayer.MPTK_ChannelPresetChange(mptkEvent.Channel, 40, -1);
+                                }
+                                midiStreamPlayer.MPTK_PlayEvent(mptkEvent);
+                            });
                     }
                     break;
                 }
@@ -201,7 +211,6 @@ public class MidiNoteSpawnerScript : MonoBehaviour
                         .AppendInterval(tweenTime)
                         .AppendCallback(() =>
                         {
-                            
                             midiStreamPlayer.MPTK_PlayEvent(mptkEvent);
                         });
                     break;

@@ -11,6 +11,9 @@
   </SoundFonts>
   <IndexSelectedSF>0</IndexSelectedSF>
   <MidiFiles>
+    <string>darude-sandstorm</string>
+    <string>Happy-Birthday-To-You-1</string>
+    <string>hot-cross-buns</string>
     <string>Mary Had A Little Lamb</string>
     <string>Petrichor</string>
     <string>Tetris Theme</string>
