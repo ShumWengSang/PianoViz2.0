@@ -119,6 +119,7 @@ namespace MidiPianoInput
             PlayMPTKEvent(111, mistakeNote);
             DoOutlineFlash(failColor);
         }
+        
 
         void DoOutlineFlash(Color color, float time = 0.3f)
         {
