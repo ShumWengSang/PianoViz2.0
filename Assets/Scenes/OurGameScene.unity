@@ -7712,17 +7712,17 @@ PrefabInstance:
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
       propertyPath: songList.Array.size
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
       propertyPath: songList.Array.data[0].channel
-      value: 0
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
       propertyPath: songList.Array.data[1].channel
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
@@ -7731,18 +7731,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
+      propertyPath: songList.Array.data[4].channel
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
       propertyPath: songList.Array.data[0].songName
-      value: Mary Had A Little Lamb
+      value: Darude Sandstorm
       objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
       propertyPath: songList.Array.data[1].songName
-      value: Petrichor
+      value: Happy Birthday To You
       objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
       propertyPath: songList.Array.data[2].songName
-      value: Tetris Theme
+      value: hot-cross-buns
       objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
@@ -7758,6 +7763,26 @@ PrefabInstance:
         type: 3}
       propertyPath: songList.Array.data[2].startingNote
       value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: songList.Array.data[3].startingNote
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: songList.Array.data[4].startingNote
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: songList.Array.data[0].includeAccompaniment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: songList.Array.data[1].includeAccompaniment
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699795, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
@@ -8009,7 +8034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f496188b6660a44b444d30ba6ff815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skipSequence: 0
+  skipSequence: 1
   bleModel: {fileID: 2117728618}
   rotationEase: 16
   rotationDuration: 1.5
@@ -13596,7 +13621,7 @@ MonoBehaviour:
   AudioBufferLenght: 0
   AudioNumBuffers: 0
   midiNameToPlay: Mary Had A Little Lamb
-  midiIndexToPlay: 0
+  midiIndexToPlay: 2
   MPTK_StartPlayAtFirstNote: 0
   speed: 1
   durationEditorModeOnly: 
