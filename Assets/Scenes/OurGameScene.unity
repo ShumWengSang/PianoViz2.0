@@ -7835,7 +7835,7 @@ PrefabInstance:
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
       propertyPath: songList.Array.size
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
@@ -7855,7 +7855,7 @@ PrefabInstance:
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
       propertyPath: songList.Array.data[4].channel
-      value: 7
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
@@ -7870,7 +7870,7 @@ PrefabInstance:
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
       propertyPath: songList.Array.data[2].songName
-      value: hot-cross-buns
+      value: Mary Had A Little Lamb
       objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
@@ -7905,6 +7905,11 @@ PrefabInstance:
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
       propertyPath: songList.Array.data[1].includeAccompaniment
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
+      propertyPath: songList.Array.data[2].includeAccompaniment
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699795, guid: 6b3fd4d6b1904634794377cec88d93df,
