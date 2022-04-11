@@ -48,20 +48,34 @@ MonoBehaviour:
     keyword: Button
     keyCode: 56
     action:
-      id: 1
-      description: Select
-      axisConstraint: 2
+      id: 0
+      description: None
+      axisConstraint: 0
   - localizationKey: 
     keyword: Play
     keyCode: 32
     action:
-      id: 1
-      description: Select
-      axisConstraint: 2
+      id: 0
+      description: None
+      axisConstraint: 0
   - localizationKey: 
     keyword: Adjust
     keyCode: 27
     action:
-      id: 1
-      description: Select
-      axisConstraint: 2
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Next Song
+    keyCode: 0
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0
+  - localizationKey: 
+    keyword: Previous Song
+    keyCode: 0
+    action:
+      id: 0
+      description: None
+      axisConstraint: 0

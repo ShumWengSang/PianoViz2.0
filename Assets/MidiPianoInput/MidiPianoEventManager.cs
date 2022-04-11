@@ -106,12 +106,6 @@ namespace MidiPianoInput
         [SerializeField] private int failChannel;
         private void OnMistake(MidiNote note, int velocity)
         {
-            if (midiStreamPlayer.MPTK_ChannelPresetGetIndex(0) == 0)
-            {
-                bool ret = midiStreamPlayer.MPTK_ChannelPresetChange(0, 111, -1);
-                Debug.Log($"Change to preset 111 {ret}");
-            }
-
             MPTKEvent mistakeNote = new MPTKEvent()
             {
                 Command = MPTKCommand.NoteOn,
@@ -121,16 +115,16 @@ namespace MidiPianoInput
                 Velocity = velocity,
                 Delay = 0,
             };
-            midiStreamPlayer.MPTK_PlayEvent(mistakeNote);
-
+            
+            PlayMPTKEvent(111, mistakeNote);
             DoOutlineFlash(failColor);
         }
 
-        void DoOutlineFlash(Color color)
+        void DoOutlineFlash(Color color, float time = 0.3f)
         {
             outlineFeedback.Kill();
             outlineFeedback = DOTween.Sequence();
-            outlineFeedback.Append(keyboardOutlineFeedback.material.DOColor(color, 0.3f));
+            outlineFeedback.Append(keyboardOutlineFeedback.material.DOColor(color, time));
             outlineFeedback.Append(keyboardOutlineFeedback.material.DOColor(Color.black, 0.1f));
         }
 
@@ -179,6 +173,17 @@ namespace MidiPianoInput
             anticipatedNoteEvents[keyIndex].Enqueue(new NoteEventInfo(mptkEvent, noteTime, noteVisualization));
         }
 
+        bool PlayMPTKEvent(int preset, MPTKEvent midiEvent)
+        {
+            bool ret = true;
+            if (midiStreamPlayer.MPTK_ChannelPresetGetIndex(0) != preset)
+            {
+                ret = midiStreamPlayer.MPTK_ChannelPresetChange(0, preset, -1);
+            }
+            midiStreamPlayer.MPTK_PlayEvent(midiEvent);
+
+            return ret;
+        }
         private void OnKeyboardNotePress(MidiNote note, int velocity)
         {
             int noteIndex = note - lowerC;
@@ -204,14 +209,10 @@ namespace MidiPianoInput
 #endif
                     if(nextNote.noteVisualization)
                         nextNote.noteVisualization.GetComponent<Renderer>().material = successMaterial;
-                    
-                    if (midiStreamPlayer.MPTK_ChannelPresetGetIndex(0) != 0)
-                    {
-                        bool ret = midiStreamPlayer.MPTK_ChannelPresetChange(0, 0, -1);
-                    }
-                    midiStreamPlayer.MPTK_PlayEvent(nextNote.mptkEvent);
 
-                    DoOutlineFlash(successColor);
+                    PlayMPTKEvent(0, nextNote.mptkEvent);
+
+                    DoOutlineFlash(successColor, nextNote.fireDuration);
                     // wait for a release now at the correct time
                     nextNote.anticipatePress = false;
                     nextNote.fireTime += nextNote.fireDuration;
