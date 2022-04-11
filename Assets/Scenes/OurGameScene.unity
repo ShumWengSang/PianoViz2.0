@@ -7854,6 +7854,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
         type: 3}
+      propertyPath: songList.Array.data[3].channel
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 1759559030904699793, guid: 6b3fd4d6b1904634794377cec88d93df,
+        type: 3}
       propertyPath: songList.Array.data[4].channel
       value: 0
       objectReference: {fileID: 0}
