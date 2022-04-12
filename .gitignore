@@ -61,3 +61,5 @@ crashlytics-build.properties
 .idea
 Generated.SpectatorView.AssetCaches
 /Assets/Generated.SpectatorView.Settings
+
+dev/
