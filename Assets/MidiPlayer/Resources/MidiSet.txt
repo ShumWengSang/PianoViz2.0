@@ -15,6 +15,7 @@
     <string>Happy Birthday To You</string>
     <string>Mary Had A Little Lamb</string>
     <string>Petrichor</string>
+    <string>PianoViz</string>
     <string>Tetris Theme</string>
   </MidiFiles>
 </MidiSet>

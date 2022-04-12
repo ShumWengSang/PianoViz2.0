@@ -284,6 +284,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         
         // Fade out + remove the banner
         bannerParent.GetComponent<FollowCameraScript>().enabled = false;
+        MovingBannerObjects.BannerBackground.material.SetFloat("_BorderWidth", 0.0f);
         var bannerFadeOut = DOTween.To(() => MovingBannerObjects.BannerBackground.material.GetFloat(Property),
             x => MovingBannerObjects.BannerBackground.material.SetFloat(Property, x), 0.0f, 0.6f);
         MovingBannerObjects.BannerBackground.material.DOFade(0, 0.6f);
@@ -333,10 +334,11 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         Vector3 targetPosition = PlaySpace.position;
         
         // Offset the current position, then make it fall
-        KeyboardAndItems.position = new Vector3(targetPosition.x, targetPosition.y + 2, targetPosition.z);
+        KeyboardAndItems.position = new Vector3(targetPosition.x, targetPosition.y + 1, targetPosition.z);
         var FallDownTween = KeyboardAndItems.DOMoveY(targetPosition.y, FallSound.length).SetEase(fallingDownEase);
         FallingAudioSource.clip = FallSound;
         FallingAudioSource.Play();
+        audioPlayer.volume = 0.25f;
         yield return FallDownTween.WaitForCompletion();
         yield return new WaitWhile(() => FallingAudioSource.isPlaying);
 
@@ -344,6 +346,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         OnKeyboardDropped?.Invoke();
         audioPlayer.clip = ThudSound;
         audioPlayer.Play();
+
         
         // Pulse all the keys
         foreach (var child in Keyboard.GetComponentsInChildren<Transform>())
@@ -360,6 +363,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         yield return fadeOutMarker.WaitForCompletion();
         
         // Play Noise
+        audioPlayer.volume = 1.0f;
         audioPlayer.clip = NotificationSound;
         audioPlayer.Play();
         
@@ -372,6 +376,7 @@ public class GameSetupInstructionsGUI : MonoBehaviour
         
         audioPlayer.clip = NotificationSound;
         audioPlayer.Play();
+        
         
         // Fade in text saying to confirm placement
         yield return StartCoroutine(FadeInFadeOutText("Please align the virtual keyboard outline with the real-world keyboard", StaticBannerObjects.Text, false));

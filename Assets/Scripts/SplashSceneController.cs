@@ -10,6 +10,7 @@ public class SplashSceneController : MonoBehaviour
 {
     public GameObject digiSplash;
     public GameObject pianoSplash;
+    public GameObject text;
     public MidiStreamPlayer midiStreamPlayer;
 
     public float fadeDuration = 0.5f;
@@ -21,13 +22,15 @@ public class SplashSceneController : MonoBehaviour
     private Material digiMat;
     private Material pianoMat;
 
+    [SerializeField] private AudioSource audioSource; 
+
     public bool nextScene = false;
     // Start is called before the first frame update
     public void Start()
     {
         digiMat = digiSplash.GetComponent<MeshRenderer>().material;
         pianoMat = pianoSplash.GetComponent<MeshRenderer>().material;
-
+        text.SetActive(false);
         SoundSequence();
         SplashSequence();
 
@@ -70,20 +73,21 @@ public class SplashSceneController : MonoBehaviour
         soundSequence.AppendInterval(soundInterval);
         soundSequence.AppendCallback(() =>
         {
-            midiStreamPlayer.MPTK_PlayEvent(soundevent);
+            audioSource.Play();
+            //midiStreamPlayer.MPTK_PlayEvent(soundevent);
         });
-        soundSequence.AppendInterval(soundInterval);
-
-        soundSequence.AppendCallback(() =>
-        {
-            midiStreamPlayer.MPTK_PlayEvent(soundevent1);
-        });
-        soundSequence.AppendInterval(soundInterval);
-
-        soundSequence.AppendCallback(() =>
-        {
-            midiStreamPlayer.MPTK_PlayEvent(soundevent2);
-        });
+        // soundSequence.AppendInterval(soundInterval);
+        //
+        // soundSequence.AppendCallback(() =>
+        // {
+        //     midiStreamPlayer.MPTK_PlayEvent(soundevent1);
+        // });
+        // soundSequence.AppendInterval(soundInterval);
+        //
+        // soundSequence.AppendCallback(() =>
+        // {
+        //     midiStreamPlayer.MPTK_PlayEvent(soundevent2);
+        // });
     }
 
     private void SplashSequence()
@@ -98,14 +102,36 @@ public class SplashSceneController : MonoBehaviour
         seq.AppendInterval(1.0f);
         seq.AppendCallback( () =>
         {
+            digiSplash.SetActive(false);
+            pianoSplash.SetActive(false);
+            text.SetActive(true);
+        });
+    }
+
+    public void GoGameScene()
+    {
+        GoScene("OurGameScene");
+    }
+
+    public void GoCreditScene()
+    {
+        GoScene("CreditScene");
+    }
+
+    public void GoHomeScene()
+    {
+        GoScene("Splash Screen");
+    }
+
+    private void GoScene(string sceneName)
+    {
 #if UNITY_EDITOR
-            if (nextScene)
-            {
-                SceneManager.LoadScene("OurGameScene");
-            }
+        if (nextScene)
+        {
+            SceneManager.LoadScene(sceneName);
+        }
 #else
             SceneManager.LoadScene("OurGameScene");
 #endif
-        });
     }
 }
