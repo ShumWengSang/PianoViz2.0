@@ -8431,7 +8431,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01f496188b6660a44b444d30ba6ff815, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skipSequence: 1
+  skipSequence: 0
   bleModel: {fileID: 2117728618}
   rotationEase: 16
   rotationDuration: 1.5
