@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Microsoft.MixedReality.Toolkit.Experimental.UI;
 using Microsoft.MixedReality.Toolkit.UI;
 using MidiPlayerTK;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace PlaybackControls
 {
@@ -29,7 +31,7 @@ namespace PlaybackControls
         [ReadOnly(true)] public string songName;
         [SerializeField] public startingMidiNote startingNote;
         [SerializeField] public int channel;
-        [SerializeField] public bool includeAccompaniment;
+        [FormerlySerializedAs("midiAccompaniment")] [SerializeField] public AudioClip wavAccompaniment;
     }
     
     [ExecuteInEditMode]
@@ -37,6 +39,7 @@ namespace PlaybackControls
     {
         [NonSerialized] private static SongToggle self;
         [SerializeField] private MidiNoteSpawnerScript notespawner;
+        [SerializeField] private GameObject songSpeedControls;
         [SerializeField] private List<SongSelection> songList = new List<SongSelection>();
         [SerializeField] private bool refresh = false;
         private int selectedMidiIndex = -1;
@@ -53,12 +56,25 @@ namespace PlaybackControls
             self = this;
         }
 
+        private void Start()
+        {
+            // songs that play wav files can't change their playback speed
+            songSpeedControls.SetActive(!selectedSong.wavAccompaniment);
+        }
+
         private void Update()
         {
             if (notespawner.midiFilePlayer.MPTK_MidiIndex != selectedMidiIndex)
             {
                 selectedMidiIndex = notespawner.midiFilePlayer.MPTK_MidiIndex;
-                songTitle.text = "• " + songList[selectedMidiIndex].songName + " •";
+                songTitle.text = "• " + selectedSong.songName + " •";
+                
+                // songs that play wav files can't change their playback speed
+                songSpeedControls.SetActive(!selectedSong.wavAccompaniment);
+                if (selectedSong.wavAccompaniment)
+                {
+                    songSpeedControls.GetComponent<SongSpeedSliderScript>().SetSpeed(1f);
+                }
             }
             TogglePlayButton.SetSpriteIcon(TogglePlayButton.IconSet.SpriteIcons[(notespawner.midiFilePlayer.MPTK_IsPlaying? 7 : 1)]);
         }
@@ -92,7 +108,6 @@ namespace PlaybackControls
                     songName = fileName,
                     startingNote = startingMidiNote.C5,
                     channel = 0,
-                    includeAccompaniment = true
                 });
             }
 
@@ -103,7 +118,7 @@ namespace PlaybackControls
                 {
                     newSongList[index].startingNote = song.startingNote;
                     newSongList[index].channel = song.channel;
-                    newSongList[index].includeAccompaniment = song.includeAccompaniment;
+                    newSongList[index].wavAccompaniment = song.wavAccompaniment;
                 }
                 
             }

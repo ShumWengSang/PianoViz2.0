@@ -81,10 +81,20 @@ public class MidiNoteSpawnerScript : MonoBehaviour
 
         var preplayMetronome = DOTween.Sequence();
         midiFilePlayer.MPTK_Pause();
-        preplayMetronome.AppendInterval((float)timeBetweenQuaterNote * 8).AppendCallback(() =>
-        {
-            midiFilePlayer.MPTK_UnPause();
-        });
+        preplayMetronome
+            .AppendInterval((float) timeBetweenQuaterNote * 8)
+            .AppendCallback(() => { midiFilePlayer.MPTK_UnPause(); })
+            .AppendInterval(tweenTime)
+            .AppendCallback(() =>
+            {
+                if (SongToggle.selectedSong.wavAccompaniment)
+                {
+                    AudioSource audioSource = GetComponent<AudioSource>();
+                    audioSource.clip = SongToggle.selectedSong.wavAccompaniment;
+                    audioSource.Play();
+                }
+            });
+            
         preplayMetronome.timeScale = midiFilePlayer.MPTK_Speed;
 
         tempoVisual = DOTween.Sequence();        
@@ -121,6 +131,7 @@ public class MidiNoteSpawnerScript : MonoBehaviour
 
     public void StopSong()
     {
+        GetComponent<AudioSource>().Stop();
         midiFilePlayer.MPTK_Stop();
         foreach (Transform activeNote in activeNotes)
         {
