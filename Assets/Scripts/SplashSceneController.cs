@@ -110,16 +110,19 @@ public class SplashSceneController : MonoBehaviour
 
     public void GoGameScene()
     {
+        Debug.Log("Going to game");
         GoScene("OurGameScene");
     }
 
     public void GoCreditScene()
     {
+        Debug.Log("Going to credits");
         GoScene("CreditScene");
     }
 
     public void GoHomeScene()
     {
+        Debug.Log("Going to splash");
         GoScene("Splash Screen");
     }
 
@@ -131,7 +134,19 @@ public class SplashSceneController : MonoBehaviour
             SceneManager.LoadScene(sceneName);
         }
 #else
-            SceneManager.LoadScene("OurGameScene");
+            SceneManager.LoadScene(sceneName);
+#endif
+    }
+
+    private void GoScene(int index)
+    {
+#if UNITY_EDITOR
+        if (nextScene)
+        {
+            SceneManager.LoadScene(index);
+        }
+#else
+            SceneManager.LoadScene(index);
 #endif
     }
 }
